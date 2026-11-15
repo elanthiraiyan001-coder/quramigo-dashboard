@@ -1,0 +1,2540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CurAmigo MedCare — Receptionist Dashboard</title>
+  <style>
+    /* =========================================================
+       CURAMIGO DESIGN SYSTEM & CORE STYLES
+       ========================================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #2563EB;
+      --primary-hover: #1D4ED8;
+      --primary-light: #EFF6FF;
+      --primary-border: #BFDBFE;
+      --curamigo-blue: #2563EB;
+
+      --accent-orange: #F59E0B;
+      --accent-orange-light: #FEF3C7;
+      --accent-orange-border: #FDE68A;
+
+      --green: #10B981;
+      --green-dark: #059669;
+      --green-light: #ECFDF5;
+      --green-border: #A7F3D0;
+
+      --red: #EF4444;
+      --red-dark: #DC2626;
+      --red-light: #FEF2F2;
+      --red-border: #FECACA;
+
+      --purple: #9333EA;
+      --purple-light: #FAF5FF;
+      --purple-border: #E9D5FF;
+
+      --slate-50: #F8FAFC;
+      --slate-100: #F1F5F9;
+      --slate-200: #E2E8F0;
+      --slate-300: #CBD5E1;
+      --slate-400: #94A3B8;
+      --slate-500: #64748B;
+      --slate-600: #475569;
+      --slate-700: #334155;
+      --slate-800: #1E293B;
+      --slate-900: #0F172A;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Plus Jakarta Sans", Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: #F8FAFC;
+      color: var(--slate-800);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      font-size: 13px;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--slate-50); }
+    ::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--slate-400); }
+
+    /* LAYOUT */
+    .app-layout { display: flex; width: 100vw; height: 100vh; overflow: hidden; background: #F8FAFC; }
+    
+    /* SIDEBAR (CURAMIGO MODERN SAAS STYLE) */
+    .sidebar {
+      width: 240px;
+      background: #FFFFFF;
+      border-right: 1px solid var(--slate-200);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 30;
+    }
+    .sidebar-header {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      border-bottom: 1px solid var(--slate-100);
+    }
+    .curamigo-brand {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--curamigo-blue);
+      text-transform: uppercase;
+    }
+    .sidebar-collapse-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--slate-200);
+      background: #ffffff;
+      color: var(--slate-400);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .sidebar-collapse-btn:hover { background: var(--slate-50); color: var(--slate-700); }
+
+    .sidebar-search-box {
+      margin: 14px 14px 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--slate-400);
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .sidebar-search-box:hover { border-color: var(--slate-300); }
+
+    .nav-group-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--slate-400);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 10px 18px 4px;
+    }
+    .nav-list { list-style: none; padding: 0 10px; display: flex; flex-direction: column; gap: 3px; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--slate-600);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+    .nav-item:hover { background: var(--slate-100); color: var(--slate-900); }
+    .nav-item.active {
+      background: var(--curamigo-blue);
+      color: #FFFFFF;
+      font-weight: 700;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+    }
+    .nav-item .left-grp { display: flex; align-items: center; gap: 10px; }
+    .nav-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--slate-100);
+      color: var(--slate-600);
+    }
+    .nav-item.active .nav-badge {
+      background: rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
+    }
+
+    .sidebar-footer {
+      padding: 14px 18px;
+      border-top: 1px solid var(--slate-100);
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .rx-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--slate-100);
+      color: var(--slate-700);
+      font-weight: 800;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--slate-200);
+    }
+
+    /* TOP HEADER */
+    .top-header {
+      height: 64px;
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--slate-200);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 20;
+    }
+    .header-greeting-title { font-size: 14px; font-weight: 800; color: var(--slate-900); }
+    .header-greeting-date { font-size: 11px; color: var(--slate-500); display: flex; align-items: center; gap: 4px; margin-top: 1px; }
+
+    /* GLOBAL DOCTOR SCOPE TOGGLE */
+    .doctor-scope-toggle {
+      display: flex;
+      background: var(--slate-100);
+      padding: 3px;
+      border-radius: 8px;
+      border: 1px solid var(--slate-200);
+      font-size: 11.5px;
+    }
+    .scope-btn {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--slate-600);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .scope-btn.active {
+      background: #FFFFFF;
+      color: var(--curamigo-blue);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    /* DOCTOR IDLE STATUS INDICATORS & SIMULATION */
+    .doc-status-widget {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--slate-200);
+      background: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    @keyframes pulseRedAlert {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      50% { transform: scale(1.02); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+    }
+    .status-pulse-red {
+      animation: pulseRedAlert 1.2s infinite ease-in-out;
+      background: var(--red-light) !important;
+      color: var(--red) !important;
+      border-color: #FCA5A5 !important;
+    }
+
+    .header-search-bar {
+      width: 220px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      background: #FFFFFF;
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+      font-size: 11px;
+      color: var(--slate-400);
+      cursor: pointer;
+    }
+    .header-search-bar:hover { border-color: var(--slate-300); }
+
+    .header-action-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      border: 1px solid var(--slate-200);
+      background: #ffffff;
+      color: var(--slate-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .header-action-btn:hover { background: var(--slate-50); border-color: var(--slate-300); }
+
+    /* VIEWPORT & TAB CONTAINERS */
+    .main-viewport {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      overflow-y: auto;
+      background: #F8FAFC;
+    }
+    .tab-view { display: none; padding: 24px 28px 40px; max-width: 1440px; margin: 0 auto; width: 100%; }
+    .tab-view.active { display: block; animation: tabFadeIn 0.15s ease-out; }
+    @keyframes tabFadeIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* BUTTONS */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 7px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; transition: all 0.15s ease; border: 1px solid transparent; text-decoration: none; user-select: none; }
+    .btn-primary { background: var(--primary); color: #ffffff; box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25); }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-outline { background: #ffffff; border-color: var(--slate-300); color: var(--slate-700); }
+    .btn-outline:hover { background: var(--slate-50); border-color: var(--slate-400); }
+    .btn-danger { background: var(--red); color: #ffffff; }
+    .btn-danger:hover { background: var(--red-dark); }
+    .btn-sm { padding: 4px 10px; font-size: 11px; border-radius: 6px; }
+
+    /* CARDS */
+    .desk-card {
+      background: #FFFFFF;
+      border: 1px solid var(--slate-200);
+      border-radius: 14px;
+      padding: 18px 22px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .card-title { font-size: 14px; font-weight: 800; color: var(--slate-900); }
+    .card-sub { font-size: 11px; color: var(--slate-500); margin-top: 1px; }
+
+    /* =========================================================
+       DESK OPERATIONS STYLES
+       ========================================================= */
+    .desk-chamber-selector-bar {
+      background: #FFFFFF;
+      border: 1px solid var(--slate-200);
+      border-radius: 12px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .chamber-btn-group { display: flex; gap: 8px; }
+    .chamber-switch-btn {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid var(--slate-200);
+      background: var(--slate-50);
+      color: var(--slate-700);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chamber-switch-btn:hover { background: #FFFFFF; border-color: var(--slate-300); }
+    .chamber-switch-btn.active {
+      background: #FFFFFF;
+      border-color: var(--curamigo-blue);
+      color: var(--curamigo-blue);
+      box-shadow: 0 1px 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .telemetry-card {
+      background: #FFFFFF;
+      border: 1px solid #BBF7D0;
+      border-radius: 14px;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(16, 185, 129, 0.05);
+    }
+    .telemetry-left { display: flex; align-items: center; gap: 14px; }
+    .telemetry-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--slate-700);
+    }
+    .telemetry-tag {
+      font-size: 10px;
+      font-weight: 800;
+      color: #059669;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .telemetry-tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #10B981; }
+    .telemetry-title { font-size: 18px; font-weight: 800; color: var(--slate-900); margin-top: 1px; }
+    .telemetry-sub { font-size: 12px; color: var(--slate-500); }
+    .telemetry-stats { display: flex; align-items: center; gap: 36px; }
+    .telemetry-stat-item { text-align: right; }
+    .telemetry-stat-label { font-size: 10px; font-weight: 700; color: var(--slate-500); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 2px; }
+    .telemetry-stat-val { font-size: 18px; font-weight: 800; color: var(--slate-900); }
+
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
+    .metric-card {
+      background: #FFFFFF;
+      border: 1px solid var(--slate-200);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .metric-icon-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #EFF6FF;
+      color: var(--curamigo-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    .metric-name { font-size: 12px; font-weight: 700; color: var(--slate-700); }
+    .metric-num { font-size: 26px; font-weight: 800; color: var(--slate-900); line-height: 1.1; margin: 4px 0 2px; }
+    .metric-helper { font-size: 11px; color: var(--slate-500); }
+
+    .next-callable-card {
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      border-radius: 12px;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .callable-tag { font-size: 10px; font-weight: 800; color: #059669; letter-spacing: 0.8px; text-transform: uppercase; }
+    .callable-name { font-size: 16px; font-weight: 800; color: var(--slate-900); margin-top: 2px; }
+    .callable-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--slate-200);
+      background: #FFFFFF;
+      color: var(--slate-600);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: not-allowed;
+      opacity: 0.9;
+    }
+
+    .desk-split-layout { display: grid; grid-template-columns: 360px 1fr; gap: 20px; align-items: start; margin-bottom: 18px; }
+    .left-controls-col { display: flex; flex-direction: column; gap: 18px; }
+    .reg-card { background: #FFFFFF; border: 1px solid var(--slate-200); border-radius: 14px; padding: 20px; }
+    .reg-type-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+    .reg-toggle-btn {
+      padding: 9px 12px; border-radius: 9px; border: 1px solid var(--slate-200); background: #FFFFFF; color: var(--slate-700); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer;
+    }
+    .reg-toggle-btn.active { border-color: var(--curamigo-blue); color: var(--curamigo-blue); background: #EFF6FF; }
+
+    .priority-chips-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .priority-chip-btn { padding: 10px 12px; border-radius: 10px; border: 1px solid var(--slate-200); background: #FFFFFF; color: var(--slate-700); font-size: 11px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+    .priority-chip-btn:hover { border-color: var(--slate-300); background: var(--slate-50); }
+    .priority-chip-btn.active-emergency { border-color: #FCA5A5; background: #FEF2F2; color: #DC2626; }
+    .priority-chip-btn.active-vip { border-color: #FDE68A; background: #FFFBEB; color: #D97706; }
+
+    .form-field-label { font-size: 10px; font-weight: 800; color: var(--slate-500); letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 6px; display: block; }
+    .form-text-input { width: 100%; padding: 9px 12px; border: 1px solid var(--slate-200); border-radius: 8px; font-size: 12px; font-family: inherit; color: var(--slate-800); outline: none; margin-bottom: 12px; }
+    .form-text-input:focus { border-color: var(--curamigo-blue); }
+
+    .status-toggle-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .status-toggle-pill { padding: 9px 10px; border-radius: 8px; border: 1px solid var(--slate-200); background: #FFFFFF; color: var(--slate-600); font-size: 11px; font-weight: 700; text-align: center; cursor: pointer; }
+    .status-toggle-pill.active-verified { border-color: #A7F3D0; color: #059669; background: #ECFDF5; }
+    .status-toggle-pill.active-away { border-color: #E9D5FF; color: #9333EA; background: #FAF5FF; }
+
+    .btn-submit-walkin { width: 100%; padding: 11px; border-radius: 10px; background: #93C5FD; color: #FFFFFF; font-size: 13px; font-weight: 700; border: none; cursor: pointer; transition: all 0.15s; }
+    .btn-submit-walkin.ready { background: var(--curamigo-blue); box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25); }
+
+    .needs-attention-card { background: #FFFFFF; border: 1px solid var(--slate-200); border-radius: 14px; padding: 20px; }
+    .attention-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .attention-badge { background: #FCE7F3; color: #DB2777; font-size: 11px; font-weight: 800; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .attention-item { padding: 11px 13px; border-radius: 10px; background: var(--slate-50); border: 1px solid var(--slate-100); margin-top: 8px; cursor: pointer; transition: all 0.15s; }
+    .attention-item:hover { background: #FFFFFF; border-color: var(--slate-300); }
+
+    .master-queue-card { background: #FFFFFF; border: 1px solid var(--slate-200); border-radius: 14px; overflow: hidden; }
+    .queue-top-bar { padding: 18px 22px 14px; display: flex; align-items: center; justify-content: space-between; }
+    .queue-search-input { width: 220px; padding: 7px 12px; border: 1px solid var(--slate-200); border-radius: 8px; font-size: 12px; outline: none; }
+    .queue-search-input:focus { border-color: var(--curamigo-blue); }
+
+    .queue-filter-row { padding: 0 22px 14px; display: flex; align-items: center; gap: 6px; overflow-x: auto; border-bottom: 1px solid var(--slate-100); }
+    .filter-pill-btn { padding: 6px 14px; border-radius: 999px; font-size: 11px; font-weight: 700; border: 1px solid transparent; background: transparent; color: var(--slate-600); cursor: pointer; white-space: nowrap; }
+    .filter-pill-btn:hover { background: var(--slate-100); color: var(--slate-900); }
+    .filter-pill-btn.active { background: var(--curamigo-blue); color: #FFFFFF; }
+
+    .queue-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; }
+    .queue-table th { padding: 12px 18px; font-size: 10px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: var(--slate-400); border-bottom: 1px solid var(--slate-100); background: #FFFFFF; }
+    .queue-table td { padding: 13px 18px; border-bottom: 1px solid var(--slate-100); vertical-align: middle; }
+    .queue-table tr:hover td { background: #FAFAFC; }
+
+    .pos-circle { width: 28px; height: 28px; border-radius: 50%; background: var(--slate-50); border: 1px solid var(--slate-200); color: var(--slate-700); font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+    .status-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .badge-emergency { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+    .badge-regular { background: #F8FAFC; color: #64748B; border: 1px solid #E2E8F0; }
+    .badge-verified { background: #ECFDF5; color: #059669; }
+    .badge-expected { background: #F8FAFC; color: #64748B; border: 1px solid #E2E8F0; }
+    .badge-diagnostics { background: #EFF6FF; color: #2563EB; }
+    .badge-away { background: #FAF5FF; color: #9333EA; }
+
+    .queue-table-footer { padding: 14px 22px; background: #FFFFFF; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--slate-500); border-top: 1px solid var(--slate-100); }
+    .bottom-knowledge-strip { background: #FFFFFF; border: 1px solid var(--slate-200); border-radius: 12px; padding: 14px 22px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; font-size: 12px; color: var(--slate-700); font-weight: 600; }
+
+    /* =========================================================
+       CALENDAR & APPOINTMENTS (MATCHING UPLOADED SCREENSHOT)
+       ========================================================= */
+    .cal-top-banner {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--slate-200);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cal-top-search-group { display: flex; align-items: center; gap: 10px; }
+    .cal-patient-search {
+      width: 200px;
+      padding: 6px 10px;
+      border: 1px solid var(--slate-300);
+      border-radius: 6px;
+      font-size: 12px;
+      outline: none;
+    }
+    .cal-advanced-link { color: #0284C7; font-size: 11px; font-weight: 700; text-decoration: none; cursor: pointer; }
+    .cal-add-patient-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--slate-300);
+      background: #FFFFFF;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cal-top-right-group { display: flex; align-items: center; gap: 14px; }
+    .cal-trial-pill {
+      background: #15803D;
+      color: #FFFFFF;
+      padding: 5px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cal-trial-pill a { color: #FFFFFF; text-decoration: underline; }
+
+    .cal-controls-row {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--slate-200);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cal-clinic-dropdown {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--slate-900);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .cal-clinic-sub { font-size: 13px; font-weight: 600; color: var(--slate-600); }
+    .cal-learn-btn {
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--slate-300);
+      background: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--slate-700);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .cal-nav-group { display: flex; align-items: center; gap: 12px; }
+    .cal-date-range-text { font-size: 13px; font-weight: 800; color: var(--slate-900); }
+    
+    .cal-segmented-controls { display: flex; border: 1px solid var(--slate-300); border-radius: 6px; overflow: hidden; }
+    .cal-seg-btn {
+      padding: 6px 14px;
+      background: #FFFFFF;
+      border: none;
+      border-right: 1px solid var(--slate-300);
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--slate-700);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .cal-seg-btn:last-child { border-right: none; }
+    .cal-seg-btn.active {
+      background: #64748B;
+      color: #FFFFFF;
+    }
+
+    /* 3-PANEL CALENDAR LAYOUT (LEFT SIDEBAR, MAIN GRID, RIGHT SCHEDULE) */
+    .cal-3panel-container {
+      display: grid;
+      grid-template-columns: 200px 1fr 270px;
+      background: #FFFFFF;
+      border: 1px solid var(--slate-200);
+      border-radius: 0;
+      height: calc(100vh - 180px);
+      overflow: hidden;
+    }
+
+    /* CALENDAR LEFT SIDEBAR */
+    .cal-left-panel {
+      border-right: 1px solid var(--slate-200);
+      background: #F8FAFC;
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      overflow-y: auto;
+    }
+    .cal-block-btn {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--slate-300);
+      border-radius: 6px;
+      background: #FFFFFF;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--slate-800);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      margin-bottom: 16px;
+    }
+    .cal-block-btn:hover { background: var(--slate-50); border-color: var(--slate-400); }
+
+    .cal-left-section-title {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--slate-500);
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .cal-doctor-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--slate-700);
+      cursor: pointer;
+      margin-bottom: 2px;
+    }
+    .cal-doctor-item.active { background: #64748B; color: #FFFFFF; }
+    .cal-doctor-item:hover:not(.active) { background: var(--slate-200); }
+
+    /* CALENDAR MAIN TIME GRID */
+    .cal-main-grid-panel {
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      background: #FFFFFF;
+      position: relative;
+    }
+    .cal-grid-header-row {
+      display: grid;
+      grid-template-columns: 60px repeat(6, 1fr);
+      border-bottom: 1px solid var(--slate-200);
+      background: #FFFFFF;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .cal-grid-header-cell {
+      padding: 10px 4px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--slate-700);
+      border-right: 1px solid var(--slate-200);
+      text-transform: uppercase;
+    }
+    .cal-grid-header-cell.active-day {
+      background: #64748B;
+      color: #FFFFFF;
+    }
+
+    /* GRID BODY */
+    .cal-grid-body {
+      display: grid;
+      grid-template-columns: 60px repeat(6, 1fr);
+      position: relative;
+    }
+    .cal-time-col {
+      border-right: 1px solid var(--slate-200);
+      background: #FFFFFF;
+    }
+    .cal-time-cell {
+      height: 48px;
+      border-bottom: 1px solid var(--slate-100);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--slate-400);
+      text-align: right;
+      padding-right: 6px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding-top: 2px;
+    }
+
+    .cal-day-col {
+      border-right: 1px solid var(--slate-200);
+      position: relative;
+      background: #FFFFFF;
+    }
+    .cal-day-col.highlight-col {
+      background: #FFFDF5; /* Exact warm cream tint from screenshot */
+    }
+    .cal-slot-row {
+      height: 48px;
+      border-bottom: 1px solid var(--slate-100);
+    }
+
+    /* CURRENT TIME INDICATOR ORANGE LINE */
+    .cal-current-time-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #F59E0B;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .cal-current-time-tag {
+      position: absolute;
+      left: 0;
+      top: -9px;
+      background: #F59E0B;
+      color: #FFFFFF;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    /* APPOINTMENT TILES */
+    .cal-appointment-card {
+      position: absolute;
+      left: 4px;
+      right: 4px;
+      background: #EFF6FF;
+      border-left: 3px solid #2563EB;
+      border-radius: 4px;
+      padding: 4px 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #1E3A8A;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      cursor: pointer;
+      z-index: 2;
+    }
+    .cal-appointment-card.blocked-slot {
+      background: #FEF2F2;
+      border-left-color: #EF4444;
+      color: #991B1B;
+    }
+    .cal-appointment-card.pending-slot {
+      background: #FEF3C7;
+      border-left-color: #F59E0B;
+      color: #92400E;
+    }
+
+    /* CALENDAR RIGHT PANEL (TODAY'S SCHEDULE SIDEBAR) */
+    .cal-right-panel {
+      border-left: 1px solid var(--slate-200);
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .cal-right-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--slate-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--slate-900);
+    }
+    .cal-walkin-orange-btn {
+      margin: 12px 14px;
+      padding: 8px 12px;
+      border: 1px solid #F59E0B;
+      border-radius: 6px;
+      background: #FFFFFF;
+      color: #D97706;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+    }
+    .cal-walkin-orange-btn:hover { background: #FFFBEB; }
+
+    .cal-right-tabs-row {
+      display: flex;
+      background: var(--slate-100);
+      padding: 2px;
+      margin: 0 14px 10px;
+      border-radius: 6px;
+    }
+    .cal-right-tab {
+      flex: 1;
+      padding: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+      border: none;
+      background: transparent;
+      color: var(--slate-600);
+      cursor: pointer;
+    }
+    .cal-right-tab.active { background: #FFFFFF; color: var(--slate-900); border-radius: 4px; }
+
+    /* STATS BADGE ROW */
+    .cal-stats-badge-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+      padding: 0 8px 12px;
+      border-bottom: 1px solid var(--slate-100);
+      text-align: center;
+    }
+    .cal-stat-pill-label {
+      font-size: 7px;
+      font-weight: 800;
+      color: var(--slate-500);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.1;
+      letter-spacing: -0.2px;
+    }
+    .cal-stat-pill-box {
+      border-radius: 4px;
+      padding: 4px 2px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #FFFFFF;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    .cal-right-schedule-list {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* TOAST & OVERLAYS */
+    .toast-container { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 200; pointer-events: none; }
+    .toast { pointer-events: auto; background: var(--slate-900); color: #ffffff; padding: 12px 18px; border-radius: 10px; font-size: 12px; font-weight: 600; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px; }
+    .toast-success { background: #059669; }
+    .toast-error { background: #DC2626; }
+
+    .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px); z-index: 100; align-items: center; justify-content: center; padding: 16px; }
+    .modal-backdrop.open { display: flex; }
+    .modal-dialog { background: #ffffff; width: 100%; max-width: 500px; border-radius: 16px; border: 1px solid var(--slate-200); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); overflow: hidden; }
+    .modal-header { padding: 16px 20px; border-bottom: 1px solid var(--slate-100); display: flex; align-items: center; justify-content: space-between; }
+    .modal-title { font-size: 14px; font-weight: 800; color: var(--slate-900); }
+    .modal-close { background: transparent; border: none; font-size: 18px; cursor: pointer; color: var(--slate-400); }
+    .modal-body { padding: 20px; }
+    .modal-footer { padding: 14px 20px; border-top: 1px solid var(--slate-100); display: flex; justify-content: flex-end; gap: 8px; background: var(--slate-50); }
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: 11px; font-weight: 700; color: var(--slate-700); margin-bottom: 4px; }
+    .form-input, .form-select, .form-textarea { width: 100%; padding: 8px 12px; border: 1px solid var(--slate-300); border-radius: 8px; font-size: 12px; font-family: inherit; color: var(--slate-800); outline: none; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 24px; }
+    @media (max-width: 1200px) {
+      .kpi-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    }
+    .kpi-card { background: #ffffff; border: 1px solid var(--slate-200); border-radius: 12px; padding: 18px; position: relative; }
+    .kpi-card.kpi-card-danger { background: #FEF2F2; border-color: #FECACA; }
+    .kpi-card.kpi-card-danger .kpi-label { color: #DC2626; }
+    .kpi-card.kpi-card-danger .kpi-val { color: #DC2626; }
+    .kpi-card.kpi-card-danger .kpi-desc { color: #991B1B; }
+    .kpi-card.kpi-card-danger .kpi-icon { background: #FEE2E2; color: #DC2626; }
+    .kpi-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--slate-500); margin-bottom: 6px; }
+    .kpi-val { font-size: 28px; font-weight: 800; color: var(--slate-900); line-height: 1.1; }
+    .kpi-desc { font-size: 11px; color: var(--slate-500); margin-top: 6px; font-weight: 500; }
+    .kpi-icon { position: absolute; right: 18px; top: 18px; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+
+    /* CHAT & MESSAGING */
+    .chat-layout { display: flex; height: calc(100vh - 130px); border: 1px solid var(--slate-200); border-radius: 12px; background: #ffffff; overflow: hidden; }
+    .chat-sidebar { width: 280px; border-right: 1px solid var(--slate-200); background: var(--slate-50); display: flex; flex-direction: column; }
+    .chat-main { flex: 1; display: flex; flex-direction: column; }
+    .chat-feed { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; background: #F8FAFC; }
+    .chat-msg { max-width: 70%; padding: 10px 14px; border-radius: 12px; font-size: 12px; line-height: 1.4; }
+    .chat-msg.mine { align-self: flex-end; background: var(--primary); color: #ffffff; border-bottom-right-radius: 2px; }
+    .chat-msg.theirs { align-self: flex-start; background: #ffffff; border: 1px solid var(--slate-200); color: var(--slate-800); border-bottom-left-radius: 2px; }
+    .chat-input-bar { padding: 14px; border-top: 1px solid var(--slate-200); display: flex; gap: 8px; background: #ffffff; }
+
+    .approval-card { width: 100%; max-width: 480px; margin: 10px auto; background: #ffffff; border: 2px solid #FCD34D; border-radius: 12px; padding: 16px; }
+    .approval-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #FEF3C7; padding-bottom: 8px; margin-bottom: 10px; font-weight: 800; font-size: 12px; color: #92400E; }
+  </style>
+</head>
+<body>
+
+  <div class="app-layout">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div>
+        <div class="sidebar-header">
+          <span class="curamigo-brand">CURAMIGO</span>
+          <button class="sidebar-collapse-btn" title="Toggle sidebar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
+          </button>
+        </div>
+
+        <div class="sidebar-search-box" onclick="openModal('modal-search')">
+          <span style="display: flex; align-items: center; gap: 6px;">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <span>Search</span>
+          </span>
+          <kbd style="font-size: 10px; font-family: monospace;">⌘K</kbd>
+        </div>
+
+        <!-- DAILY OPERATIONS -->
+        <div class="nav-group-label">Daily operations</div>
+        <ul class="nav-list">
+          <li>
+            <button class="nav-item active" id="nav-btn-overview" onclick="switchMainTab('overview')">
+              <div class="left-grp"><span>📊 Overview</span></div>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" id="nav-btn-desk" onclick="switchMainTab('desk')">
+              <div class="left-grp"><span>🛎️ Desk operations</span></div>
+              <span class="nav-badge" id="nav-badge-desk">5</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" id="nav-btn-history" onclick="switchMainTab('history')">
+              <div class="left-grp"><span>📂 Consultation History</span></div>
+            </button>
+          </li>
+        </ul>
+
+        <!-- PLANNING & COMMUNICATION -->
+        <div class="nav-group-label" style="margin-top: 10px;">Planning</div>
+        <ul class="nav-list">
+          <li>
+            <button class="nav-item" id="nav-btn-calendar" onclick="switchMainTab('calendar')">
+              <div class="left-grp"><span>📅 Calendar & Appointments</span></div>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" id="nav-btn-copilot" onclick="switchMainTab('copilot')">
+              <div class="left-grp"><span>🤖 AI Assistant</span></div>
+              <span class="nav-badge" style="background: rgba(37, 99, 235, 0.15); color: var(--curamigo-blue);">Copilot</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" id="nav-btn-messaging" onclick="switchMainTab('messaging')">
+              <div class="left-grp"><span>💬 Messaging</span></div>
+              <span class="nav-badge" id="nav-badge-messaging" style="background: var(--accent-orange); color: white;">1 req</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" id="nav-btn-settings" onclick="switchMainTab('settings')">
+              <div class="left-grp"><span>⚙️ Profile & settings</span></div>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="rx-badge">RX</div>
+        <div>
+          <div style="font-weight: 800; font-size: 12px; color: var(--slate-900);">Reception Desk</div>
+          <div style="font-size: 11px; color: var(--slate-400);">OPD v16.6</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN VIEWPORT -->
+    <div class="main-viewport">
+      
+      <!-- TOP PERSISTENT HEADER -->
+      <header class="top-header">
+        <div>
+          <div class="header-greeting-title">Good morning, Reception team</div>
+          <div class="header-greeting-date">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span id="current-date-str">Sun, 15 Nov 2026</span>
+          </div>
+        </div>
+
+        <!-- Global Doctor Scope Selector -->
+        <div class="doctor-scope-toggle">
+          <button class="scope-btn active" id="scope-btn-all" onclick="setGlobalDoctorScope('all')">👥 All Doctors</button>
+          <button class="scope-btn" id="scope-btn-a" onclick="setGlobalDoctorScope('doc-a')">🩺 Dr. Rajesh (101)</button>
+          <button class="scope-btn" id="scope-btn-b" onclick="setGlobalDoctorScope('doc-b')">🩺 Dr. Ananya (102)</button>
+        </div>
+
+        <!-- Right Indicators & Actions -->
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div id="widget-doc-a" class="doc-status-widget">
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: var(--green);"></span>
+            <span>Dr. A:</span>
+            <span style="color: var(--green); font-weight: 800;">🟢 In Visit</span>
+          </div>
+
+          <div id="widget-doc-b" class="doc-status-widget">
+            <span id="dot-doc-b" style="width: 7px; height: 7px; border-radius: 50%; background: var(--accent-orange);"></span>
+            <span>Dr. B:</span>
+            <span id="badge-doc-b" style="color: var(--accent-orange); font-weight: 800;">🟡 Idle: 02:25</span>
+          </div>
+
+          <button class="btn btn-sm btn-outline" onclick="toggleDoctorIdleSimulation()" style="color: var(--accent-orange); border-color: #FED7AA; background: #FFFBEB;">
+            ⚡ <span id="sim-btn-text">Simulate Doctor Idle > 4m</span>
+          </button>
+
+          <div class="header-search-bar" onclick="openModal('modal-search')">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <span>Search token/name...</span>
+            <kbd style="margin-left: auto; font-size: 10px; font-family: monospace;">⌘K</kbd>
+          </div>
+
+          <div style="text-align: right; line-height: 1.1;">
+            <div style="font-weight: 800; font-size: 12px; font-family: monospace; color: var(--slate-900);" id="top-live-clock">11:06:06 AM</div>
+            <div style="font-size: 10px; color: var(--slate-400);">Revision 180</div>
+          </div>
+
+          <button class="header-action-btn" title="Refresh state" onclick="refreshCurrentView()">⟳</button>
+          <div style="display: flex; align-items: center; gap: 4px; background: #EFF6FF; color: var(--curamigo-blue); border: 1px solid #BFDBFE; padding: 4px 9px; border-radius: 8px; font-weight: 800; font-size: 11px;">
+            <span>RT</span>
+            <span style="font-size: 9px;">⌵</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- =========================================================
+           TAB 4: 📅 CALENDAR & APPOINTMENTS (MATCHING UPLOADED SCREENSHOT)
+           ========================================================= -->
+      <div id="tab-calendar" class="tab-view" style="padding: 0; max-width: 100%;">
+        
+        <!-- CALENDAR TOP BANNER / SEARCH BAR (EXACT AS SCREENSHOT) -->
+        <div class="cal-top-banner">
+          <div class="cal-top-search-group">
+            <input type="text" class="cal-patient-search" placeholder="Search patients" oninput="handleCalSearch(this.value)">
+            <span class="cal-advanced-link" onclick="openModal('modal-search')">Advanced</span>
+            <button class="cal-add-patient-btn" onclick="openModal('modal-book')">
+              <span>Add Patient</span>
+              <span style="font-size: 10px;">⌵</span>
+            </button>
+          </div>
+
+          <div class="cal-top-right-group">
+            <div class="cal-trial-pill">
+              <span style="background: rgba(255,255,255,0.2); padding: 1px 5px; border-radius: 3px;">2</span>
+              <span>days trial left! <a href="javascript:void(0)" onclick="alert('CurAmigo Pro Plan Activated')">Choose your plan.</a></span>
+            </div>
+            <span style="font-size: 16px; cursor: pointer;" title="Tips">💡</span>
+            <span style="font-size: 16px; cursor: pointer;" title="Help">❔</span>
+            <div style="position: relative; cursor: pointer;">
+              <span style="font-size: 16px;">🔔</span>
+              <span style="position: absolute; top: -6px; right: -8px; background: #EF4444; color: white; font-size: 9px; font-weight: 800; padding: 1px 4px; border-radius: 999px;">10</span>
+            </div>
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: #E2E8F0; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer;">
+              👤
+            </div>
+          </div>
+        </div>
+
+        <!-- CALENDAR SUBHEADER / CONTROLS ROW -->
+        <div class="cal-controls-row">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div class="cal-clinic-dropdown" onclick="alert('Chamber Switcher')">
+              <span>Calendar</span>
+              <span class="cal-clinic-sub" id="cal-clinic-name-label">elan clinic ⌵</span>
+            </div>
+            <button class="cal-learn-btn" onclick="showToast('Video Tutorial: Mastering Calendar Scheduling')">
+              <span style="color: #F59E0B;">▶</span>
+              <span>Learn ⌵</span>
+            </button>
+          </div>
+
+          <div class="cal-nav-group">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <button class="btn btn-sm btn-outline" style="padding: 4px 8px;" onclick="shiftCalWeek(-1)">&lt;</button>
+              <span class="cal-date-range-text" id="cal-range-text">14 – 19 Nov 2026</span>
+              <button class="btn btn-sm btn-outline" style="padding: 4px 8px;" onclick="shiftCalWeek(1)">&gt;</button>
+            </div>
+
+            <div class="cal-segmented-controls">
+              <button class="cal-seg-btn" onclick="setCalSegment('Today', this)">Today</button>
+              <button class="cal-seg-btn" onclick="setCalSegment('Day', this)">Day</button>
+              <button class="cal-seg-btn active" onclick="setCalSegment('Week', this)">Week</button>
+              <button class="cal-seg-btn" onclick="setCalSegment('Month', this)">Month</button>
+            </div>
+
+            <button class="header-action-btn" title="Print schedule" onclick="window.print()">🖨️</button>
+            <button class="btn btn-sm btn-outline" onclick="openModal('modal-block')">
+              Settings ⌵
+            </button>
+          </div>
+        </div>
+
+        <!-- 3-PANEL CALENDAR MAIN CONTAINER -->
+        <div class="cal-3panel-container">
+          
+          <!-- LEFT PANEL: DOCTORS & CATEGORIES -->
+          <div class="cal-left-panel">
+            <button class="cal-block-btn" onclick="openModal('modal-block')">
+              <span>📅</span>
+              <span>Block Calendar</span>
+            </button>
+
+            <div class="cal-left-section-title">DOCTORS</div>
+            <div class="cal-doctor-item active" id="cal-doc-item-all" onclick="selectCalendarDocFilter('all')">
+              <span>All doctors</span>
+              <span style="font-family: monospace; font-size: 11px;">0</span>
+            </div>
+            <div class="cal-doctor-item" id="cal-doc-item-elan" onclick="selectCalendarDocFilter('Dr. Elan')">
+              <span style="display: flex; align-items: center; gap: 6px;">
+                <span style="width: 7px; height: 7px; border-radius: 50%; background: #10B981;"></span>
+                <span>Dr. Elan</span>
+              </span>
+              <span style="font-family: monospace; font-size: 11px;">0</span>
+            </div>
+            <div class="cal-doctor-item" id="cal-doc-item-rajesh" onclick="selectCalendarDocFilter('Dr. Rajesh Sharma (101)')">
+              <span style="display: flex; align-items: center; gap: 6px;">
+                <span style="width: 7px; height: 7px; border-radius: 50%; background: #2563EB;"></span>
+                <span>Dr. Rajesh (101)</span>
+              </span>
+              <span style="font-family: monospace; font-size: 11px;" id="badge-cal-count-a">3</span>
+            </div>
+            <div class="cal-doctor-item" id="cal-doc-item-ananya" onclick="selectCalendarDocFilter('Dr. Ananya Sen (102)')">
+              <span style="display: flex; align-items: center; gap: 6px;">
+                <span style="width: 7px; height: 7px; border-radius: 50%; background: #F59E0B;"></span>
+                <span>Dr. Ananya (102)</span>
+              </span>
+              <span style="font-family: monospace; font-size: 11px;" id="badge-cal-count-b">2</span>
+            </div>
+
+            <div class="cal-left-section-title" style="margin-top: 24px;">CATEGORIES</div>
+            <div style="font-size: 11px; color: var(--slate-400); margin-bottom: 6px;">No categories available.</div>
+            <a href="javascript:void(0)" onclick="alert('Category Creator: General OPD, Cardiology, Pediatric Care')" style="color: #0284C7; font-size: 11px; font-weight: 700; text-decoration: none;">Add categories</a>
+          </div>
+
+          <!-- CENTER PANEL: MASTER 15-MINUTE TIME GRID -->
+          <div class="cal-main-grid-panel" id="cal-grid-panel-scroll">
+            
+            <!-- Grid Header Row (Dates) -->
+            <div class="cal-grid-header-row">
+              <div class="cal-grid-header-cell" style="cursor: pointer;" title="Collapse" onclick="showToast('Collapsing hours column')">
+                <span style="font-size: 11px;">|&lt;</span>
+              </div>
+              <div class="cal-grid-header-cell" id="head-day-0">SAT 14 NOV</div>
+              <div class="cal-grid-header-cell active-day" id="head-day-1">SUN 15 NOV</div>
+              <div class="cal-grid-header-cell" id="head-day-2">MON 16 NOV</div>
+              <div class="cal-grid-header-cell" id="head-day-3">TUE 17 NOV</div>
+              <div class="cal-grid-header-cell" id="head-day-4">WED 18 NOV</div>
+              <div class="cal-grid-header-cell" id="head-day-5">THU 19 NOV</div>
+            </div>
+
+            <!-- Grid Body with 15-minute Slots & Appointments -->
+            <div class="cal-grid-body">
+              
+              <!-- Time Labels Column (8:00 AM to 1:00 PM in 15m intervals) -->
+              <div class="cal-time-col">
+                <div class="cal-time-cell" style="color: var(--slate-400);">all-day</div>
+                <div class="cal-time-cell">8:00 AM</div>
+                <div class="cal-time-cell">8:15 AM</div>
+                <div class="cal-time-cell">8:30 AM</div>
+                <div class="cal-time-cell">8:45 AM</div>
+                <div class="cal-time-cell">9:00 AM</div>
+                <div class="cal-time-cell">9:15 AM</div>
+                <div class="cal-time-cell">9:30 AM</div>
+                <div class="cal-time-cell">9:45 AM</div>
+                <div class="cal-time-cell">10:00 AM</div>
+                <div class="cal-time-cell">10:15 AM</div>
+                <div class="cal-time-cell">10:30 AM</div>
+                <div class="cal-time-cell">10:45 AM</div>
+                <div class="cal-time-cell">11:00 AM</div>
+                <div class="cal-time-cell" style="color: #F59E0B; font-weight: 800;">11:15 AM</div>
+                <div class="cal-time-cell">11:30 AM</div>
+                <div class="cal-time-cell">11:45 AM</div>
+                <div class="cal-time-cell">12:00 PM</div>
+                <div class="cal-time-cell">12:15 PM</div>
+                <div class="cal-time-cell">12:30 PM</div>
+                <div class="cal-time-cell">12:45 PM</div>
+                <div class="cal-time-cell">1:00 PM</div>
+              </div>
+
+              <!-- Day 0: Sat 14 Nov -->
+              <div class="cal-day-col" id="col-day-0">
+                <!-- 21 15-min rows -->
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+              </div>
+
+              <!-- Day 1: Sun 15 Nov (Active Highlighted Column with Warm Tint as in screenshot) -->
+              <div class="cal-day-col highlight-col" id="col-day-1">
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                
+                <!-- 9:15 AM Slot: Sda Appointment Tile matching screenshot! -->
+                <div class="cal-slot-row" style="position: relative;">
+                  <div class="cal-appointment-card" style="top: 0; height: 38px;" onclick="showToast('Patient: Sda • Confirmed 9:15 AM appointment')">
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                      <span>🏢</span>
+                      <strong>Sda</strong>
+                    </div>
+                    <div style="font-size: 10px; color: #475569;">9:15 AM</div>
+                  </div>
+                </div>
+
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                
+                <!-- 11:15 AM Current Time Marker Line matching screenshot! -->
+                <div class="cal-slot-row" style="position: relative;">
+                  <div class="cal-current-time-line" style="top: 24px;">
+                    <span class="cal-current-time-tag">▶ 11:15 AM</span>
+                  </div>
+                </div>
+
+                <!-- 11:30 AM Slot: Pending / Blocked slot matching our Approval Workflow -->
+                <div class="cal-slot-row" style="position: relative;">
+                  <div class="cal-appointment-card pending-slot" id="grid-slot-block-card" style="top: 0; height: 60px;" onclick="switchMainTab('messaging')">
+                    <div style="font-weight: 800;">🟡 PENDING APPROVAL</div>
+                    <div style="font-size: 10px;">ICU Rounds (11:30 AM - 1:00 PM)</div>
+                    <div style="font-size: 9px; color: #B45309; margin-top: 2px;">Action required in Messaging &rarr;</div>
+                  </div>
+                </div>
+
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+              </div>
+
+              <!-- Day 2: Mon 16 Nov -->
+              <div class="cal-day-col" id="col-day-2">
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+              </div>
+
+              <!-- Day 3: Tue 17 Nov -->
+              <div class="cal-day-col" id="col-day-3">
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+              </div>
+
+              <!-- Day 4: Wed 18 Nov -->
+              <div class="cal-day-col" id="col-day-4">
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+              </div>
+
+              <!-- Day 5: Thu 19 Nov -->
+              <div class="cal-day-col" id="col-day-5">
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+                <div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div><div class="cal-slot-row"></div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- RIGHT PANEL: TODAY'S SCHEDULE (EXACT AS SCREENSHOT) -->
+          <div class="cal-right-panel">
+            <div class="cal-right-header">
+              <span>Today's Schedule</span>
+              <div style="display: flex; gap: 4px; color: var(--slate-500); cursor: pointer;">
+                <span>&lt;</span><span>&gt;</span>
+              </div>
+            </div>
+
+            <!-- Orange Walk-In Appointment Button -->
+            <button class="cal-walkin-orange-btn" onclick="openModal('modal-book')">
+              Add Walk-in Appointment
+            </button>
+
+            <!-- All / Online / Offline Filter Tabs -->
+            <div class="cal-right-tabs-row">
+              <button class="cal-right-tab active" id="tab-sched-all" onclick="setSchedTab('all', this)">All</button>
+              <button class="cal-right-tab" id="tab-sched-online" onclick="setSchedTab('online', this)">Online</button>
+              <button class="cal-right-tab" id="tab-sched-offline" onclick="setSchedTab('offline', this)">Offline</button>
+            </div>
+
+            <!-- 5 Stat Counter Pills (TODAY, WAITING, ENGAGED, DONE, CANCELLED / NO SHOW) -->
+            <div class="cal-stats-badge-row">
+              <div style="cursor: pointer;" onclick="filterScheduleStatus('all')" title="Filter: All Today">
+                <div class="cal-stat-pill-label">TODAY</div>
+                <div class="cal-stat-pill-box" style="background: #475569;" id="stat-pill-today">7</div>
+              </div>
+              <div style="cursor: pointer;" onclick="filterScheduleStatus('waiting')" title="Filter: Waiting">
+                <div class="cal-stat-pill-label">WAITING</div>
+                <div class="cal-stat-pill-box" style="background: #EA580C;" id="stat-pill-waiting">2</div>
+              </div>
+              <div style="cursor: pointer;" onclick="filterScheduleStatus('engaged')" title="Filter: Engaged">
+                <div class="cal-stat-pill-label">ENGAGED</div>
+                <div class="cal-stat-pill-box" style="background: #0284C7;" id="stat-pill-engaged">1</div>
+              </div>
+              <div style="cursor: pointer;" onclick="filterScheduleStatus('done')" title="Filter: Done">
+                <div class="cal-stat-pill-label">DONE</div>
+                <div class="cal-stat-pill-box" style="background: #16A34A;" id="stat-pill-done">4</div>
+              </div>
+              <div style="cursor: pointer;" onclick="filterScheduleStatus('cancelled')" title="Filter: Cancelled / No Show">
+                <div class="cal-stat-pill-label" style="color: #DC2626;">CANCELLED / NO SHOW</div>
+                <div class="cal-stat-pill-box" style="background: #DC2626;" id="stat-pill-cancelled">1</div>
+              </div>
+            </div>
+
+            <!-- Appointment List -->
+            <div class="cal-right-schedule-list" id="cal-schedule-items-list">
+              <div class="cal-sched-card-item" data-status="done" style="font-size: 12px; font-weight: 700; color: var(--slate-900); padding: 8px 10px; background: #F8FAFC; border: 1px solid var(--slate-200); border-radius: 6px;">
+                <div style="display: flex; justify-content: space-between;">
+                  <span>Sda</span>
+                  <span style="color: var(--curamigo-blue); font-family: monospace;">9:15 AM</span>
+                </div>
+                <div style="font-size: 10px; color: #16A34A; margin-top: 2px;">Done • Completed Consultation</div>
+              </div>
+
+              <div class="cal-sched-card-item" data-status="engaged" style="font-size: 12px; font-weight: 700; color: var(--slate-900); padding: 8px 10px; background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 6px;">
+                <div style="display: flex; justify-content: space-between;">
+                  <span>Arjun Ramesh (E-1)</span>
+                  <span style="color: #0284C7; font-family: monospace;">11:06 AM</span>
+                </div>
+                <div style="font-size: 10px; color: #0284C7; margin-top: 2px;">Engaged • In Cabin 101</div>
+              </div>
+
+              <div class="cal-sched-card-item" data-status="waiting" style="font-size: 12px; font-weight: 700; color: var(--slate-900); padding: 8px 10px; background: #FFFBEB; border: 1px solid #FCD34D; border-radius: 6px;">
+                <div style="display: flex; justify-content: space-between;">
+                  <span>Priya Nair (V-1)</span>
+                  <span style="color: #EA580C; font-family: monospace;">11:19 AM</span>
+                </div>
+                <div style="font-size: 10px; color: #EA580C; margin-top: 2px;">Waiting • VIP in Lobby</div>
+              </div>
+
+              <div class="cal-sched-card-item" data-status="cancelled" style="font-size: 12px; font-weight: 700; color: #991B1B; padding: 8px 10px; background: #FEF2F2; border: 1px solid #FECACA; border-radius: 6px;">
+                <div style="display: flex; justify-content: space-between;">
+                  <span>Sneha Kulkarni (W-4)</span>
+                  <span style="color: #DC2626; font-family: monospace;">10:00 AM</span>
+                </div>
+                <div style="font-size: 10px; color: #DC2626; margin-top: 2px;">Cancelled / No Show • Restore when verified</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- =========================================================
+           TAB 2: 🛎️ DESK OPERATIONS (FROM PREVIOUS TURN)
+           ========================================================= -->
+      <div id="tab-desk" class="tab-view">
+        <!-- 2-DOCTOR CHAMBER SWITCHER BAR -->
+        <div class="desk-chamber-selector-bar">
+          <div class="chamber-btn-group">
+            <button class="chamber-switch-btn active" id="chamber-btn-a" onclick="switchDeskChamber('doc-a')">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--green);"></span>
+              <span>Chamber 101 • Dr. Rajesh Sharma (Cardiology)</span>
+              <span style="padding: 2px 6px; border-radius: 999px; background: var(--slate-100); font-size: 10px;" id="badge-count-doc-a">3</span>
+            </button>
+            <button class="chamber-switch-btn" id="chamber-btn-b" onclick="switchDeskChamber('doc-b')">
+              <span id="chamber-dot-b" style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent-orange);"></span>
+              <span>Chamber 102 • Dr. Ananya Sen (Pediatrics)</span>
+              <span style="padding: 2px 6px; border-radius: 999px; background: var(--slate-100); font-size: 10px;" id="badge-count-doc-b">2</span>
+            </button>
+            <button class="chamber-switch-btn" id="chamber-btn-all" onclick="switchDeskChamber('all')">
+              <span>👥 All Chambers Combined</span>
+            </button>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 11px; color: var(--slate-500); font-weight: 600;">Active Chamber Scope:</span>
+            <span id="active-chamber-badge" style="padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; background: var(--green-light); color: var(--green-dark); border: 1px solid var(--green-border);">
+              🟢 Chamber 101 (Ready)
+            </span>
+          </div>
+        </div>
+
+        <!-- DEMO BANNER -->
+        <div class="demo-banner" style="background: white; border: 1px solid var(--slate-200); border-radius: 12px; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="color: var(--curamigo-blue); font-size: 16px;">🛡️</span>
+            <div>
+              <div style="font-size: 13px; font-weight: 800; color: var(--slate-900);">Shared v16.6 queue</div>
+              <div style="font-size: 12px; color: var(--slate-500);">Demo environment with fictional patient data. Queue changes stay in this browser.</div>
+            </div>
+          </div>
+          <div style="font-size: 12px; font-family: monospace; color: var(--curamigo-blue); font-weight: 600;">2026-09-12</div>
+        </div>
+
+        <!-- DOCTOR CABIN TELEMETRY CARD -->
+        <div class="telemetry-card" id="telemetry-card-container">
+          <div class="telemetry-left">
+            <div class="telemetry-icon-box">
+              <svg width="22" height="22" fill="none" stroke="#2563EB" stroke-width="2" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </div>
+            <div>
+              <div class="telemetry-tag" id="telemetry-header-tag">DOCTOR CABIN TELEMETRY</div>
+              <div class="telemetry-title" id="telemetry-title-text">Cabin ready</div>
+              <div class="telemetry-sub" id="telemetry-sub-text">2 verified in lobby</div>
+            </div>
+          </div>
+
+          <div class="telemetry-stats">
+            <div class="telemetry-stat-item">
+              <div class="telemetry-stat-label">ROLLING ACT</div>
+              <div class="telemetry-stat-val" id="telemetry-act-val">9.0m</div>
+            </div>
+            <div class="telemetry-stat-item">
+              <div class="telemetry-stat-label">COMPLETED</div>
+              <div class="telemetry-stat-val" id="telemetry-completed-val">15</div>
+            </div>
+            <div class="telemetry-stat-item">
+              <div class="telemetry-stat-label">QUEUED BREAK</div>
+              <div class="telemetry-stat-val" id="telemetry-break-val">None</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 KPI METRICS ROW -->
+        <div class="kpi-row">
+          <div class="metric-card">
+            <div class="metric-icon-circle">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div>
+              <div class="metric-name">Expected</div>
+              <div class="metric-num" id="desk-metric-expected">1</div>
+              <div class="metric-helper">Not yet verified</div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon-circle">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <div>
+              <div class="metric-name">Verified in lobby</div>
+              <div class="metric-num" id="desk-metric-verified">2</div>
+              <div class="metric-helper">Eligible for Doctor call</div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon-circle">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+            </div>
+            <div>
+              <div class="metric-name">Away / diagnostics</div>
+              <div class="metric-num" id="desk-metric-away">2</div>
+              <div class="metric-helper">Awaiting return</div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon-circle">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </div>
+            <div>
+              <div class="metric-name">Needs attention</div>
+              <div class="metric-num" id="desk-metric-attention">3</div>
+              <div class="metric-helper">VIP, late, diagnostics or cancelled</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEXT CALLABLE BANNER -->
+        <div class="next-callable-card">
+          <div>
+            <div class="callable-tag">NEXT CALLABLE</div>
+            <div class="callable-name" id="callable-patient-name">E-1 • Arjun Ramesh</div>
+          </div>
+          <button class="callable-btn">Call next patient • Doctor only</button>
+        </div>
+
+        <!-- 2-COLUMN SPLIT LAYOUT -->
+        <div class="desk-split-layout">
+          <div class="left-controls-col">
+            <!-- REGISTER PATIENT FORM -->
+            <div class="reg-card">
+              <div class="card-title">Register patient</div>
+              <div class="card-sub">Choose physical state & chamber explicitly</div>
+
+              <div class="reg-type-toggle">
+                <button class="reg-toggle-btn active" id="btn-reg-walkin" onclick="setDeskRegType('walkin')"><span>👥</span> Walk-in</button>
+                <button class="reg-toggle-btn" id="btn-reg-expected" onclick="setDeskRegType('expected')"><span>🕒</span> Expected</button>
+              </div>
+
+              <div class="priority-chips-row">
+                <button class="priority-chip-btn" id="chip-emergency" onclick="toggleDeskPriorityChoice('Emergency')">
+                  <span style="font-size: 16px;">🚨</span><span>Direct emergency</span>
+                </button>
+                <button class="priority-chip-btn" id="chip-vip" onclick="toggleDeskPriorityChoice('VIP')">
+                  <span style="font-size: 16px;">👑</span><span>VIP claim</span>
+                </button>
+              </div>
+
+              <label class="form-field-label">TARGET CHAMBER / DOCTOR</label>
+              <select id="reg-doctor-target" class="form-select" style="margin-bottom: 12px; font-weight: 700;">
+                <option value="doc-a">🩺 Chamber 101 • Dr. Rajesh Sharma</option>
+                <option value="doc-b">🩺 Chamber 102 • Dr. Ananya Sen</option>
+              </select>
+
+              <label class="form-field-label">PATIENT DISPLAY NAME</label>
+              <input type="text" id="patient-name-input" class="form-text-input" placeholder="e.g. Walk-in patient" oninput="updateRegisterButtonState()">
+
+              <label class="form-field-label">INITIAL PHYSICAL STATUS</label>
+              <div class="status-toggle-row">
+                <button class="status-toggle-pill active-verified" id="pill-status-lobby" onclick="setDeskInitialPhysicalStatus('Verified in lobby')">Verified in lobby</button>
+                <button class="status-toggle-pill" id="pill-status-away" onclick="setDeskInitialPhysicalStatus('Temporarily away')">Temporarily away</button>
+              </div>
+
+              <button class="btn-submit-walkin ready" id="btn-register-action" onclick="handleDeskRegisterPatient()">Register walk-in</button>
+            </div>
+
+            <!-- NEEDS ATTENTION CARD -->
+            <div class="needs-attention-card">
+              <div class="attention-header">
+                <span class="card-title">Needs attention</span>
+                <span class="attention-badge" id="attention-badge-count">3</span>
+              </div>
+              <div class="card-sub" style="margin-bottom: 14px;">Exceptions requiring desk follow-up</div>
+
+              <div id="attention-items-list" style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="attention-item" onclick="filterDeskQueueByToken('V-1')">
+                  <div style="font-weight: 800; font-size: 13px; color: var(--slate-900);">V-1 • Priya Nair</div>
+                  <div style="font-size: 11px; color: #D97706; font-weight: 700;">VIP awaiting (Chamber 101)</div>
+                </div>
+                <div class="attention-item" onclick="filterDeskQueueByToken('W-2')">
+                  <div style="font-weight: 800; font-size: 13px; color: var(--slate-900);">W-2 • Meera Iyer</div>
+                  <div style="font-size: 11px; color: var(--curamigo-blue); font-weight: 700;">At diagnostics (Chamber 101)</div>
+                </div>
+                <div class="attention-item" onclick="restoreCancelledPatient()">
+                  <div style="font-weight: 800; font-size: 13px; color: var(--slate-900);">W-4 • Sneha Kulkarni</div>
+                  <div style="font-size: 11px; color: var(--slate-500);">Cancelled • restore when arrival is verified</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN: MASTER OPD QUEUE TABLE -->
+          <div class="master-queue-card">
+            <div class="queue-top-bar">
+              <div>
+                <div class="card-title">Master OPD queue</div>
+                <div class="card-sub">Canonical priority, physical status and ETA from v16.6.</div>
+              </div>
+              <input type="text" id="queue-search" class="queue-search-input" placeholder="Search token or name" oninput="handleDeskSearchTable(this.value)">
+            </div>
+
+            <div class="queue-filter-row">
+              <button class="filter-pill-btn active" onclick="setDeskQueueFilter('All active', this)">All active</button>
+              <button class="filter-pill-btn" onclick="setDeskQueueFilter('Expected', this)">Expected</button>
+              <button class="filter-pill-btn" onclick="setDeskQueueFilter('Verified in lobby', this)">Verified in lobby</button>
+              <button class="filter-pill-btn" onclick="setDeskQueueFilter('Temporarily away', this)">Temporarily away</button>
+              <button class="filter-pill-btn" onclick="setDeskQueueFilter('At diagnostics', this)">At diagnostics</button>
+              <button class="filter-pill-btn" onclick="setDeskQueueFilter('In cabin', this)">In cabin</button>
+            </div>
+
+            <table class="queue-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px;">POS</th>
+                  <th>PATIENT</th>
+                  <th>PRIORITY</th>
+                  <th>REPORTING</th>
+                  <th>ETA</th>
+                  <th>PHYSICAL STATUS</th>
+                  <th style="text-align: right;">QUICK ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody id="master-queue-body"></tbody>
+            </table>
+
+            <div class="queue-table-footer">
+              <span id="queue-summary-text">5 active • 1 cancelled</span>
+              <span>⏱ ETA is authoritative; reporting time is unchanged by patient delay.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-knowledge-strip">
+          <div><span>📈</span> Reception verifies physical arrival; Doctor controls the cabin.</div>
+          <div><span>🔬</span> Diagnostic return uses its own priority.</div>
+          <div><span>☕</span> Break lifecycle is Doctor-owned.</div>
+        </div>
+      </div>
+
+      <!-- =========================================================
+           TAB 1: 📊 OVERVIEW
+           ========================================================= -->
+      <div id="tab-overview" class="tab-view active">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <div>
+            <h2 style="font-size: 18px; font-weight: 800; color: var(--slate-900);">Clinic Operational Overview</h2>
+            <p style="font-size: 12px; color: var(--slate-500);">Live consultation counts, distribution analytics, and pending roster.</p>
+          </div>
+          <span class="btn btn-sm btn-outline" id="overview-scope-badge" style="font-weight: 800; color: var(--curamigo-blue);">
+            Scope: All Chambers
+          </span>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Total Consultations</div>
+            <div class="kpi-val" id="kpi-total">48</div>
+            <div class="kpi-desc">Registered patient load today</div>
+            <div class="kpi-icon" style="background: var(--primary-light); color: var(--curamigo-blue);">🩺</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Remaining Consultations</div>
+            <div class="kpi-val" id="kpi-remaining" style="color: var(--accent-orange);">22</div>
+            <div class="kpi-desc">Awaiting examination</div>
+            <div class="kpi-icon" style="background: var(--accent-orange-light); color: var(--accent-orange);">⏳</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Lobby Queue</div>
+            <div class="kpi-val" id="kpi-lobby" style="color: #6366F1;">7</div>
+            <div class="kpi-desc">Checked-in & seated in lobby</div>
+            <div class="kpi-icon" style="background: #EEF2FF; color: #6366F1;">🛋️</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Completed Consultations</div>
+            <div class="kpi-val" id="kpi-completed" style="color: var(--green);">26</div>
+            <div class="kpi-desc">Finished & discharged today</div>
+            <div class="kpi-icon" style="background: var(--green-light); color: var(--green);">✅</div>
+          </div>
+          <div class="kpi-card kpi-card-danger">
+            <div class="kpi-label">Cancelled / No Show</div>
+            <div class="kpi-val" id="kpi-noshow">3</div>
+            <div class="kpi-desc">Missed appointments & cancellations</div>
+            <div class="kpi-icon">🚫</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 360px 1fr; gap: 20px; margin-bottom: 24px;">
+          <div class="desk-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div class="card-title">Appointment Source Distribution</div>
+              <div class="card-sub">Quramigo Mobile App vs Direct Walk-in</div>
+            </div>
+            <div style="padding: 20px 0; display: flex; flex-direction: column; align-items: center;">
+              <div style="position: relative; width: 140px; height: 140px;">
+                <svg viewBox="0 0 36 36" style="width: 100%; height: 100%; transform: rotate(-90deg);">
+                  <path stroke="var(--slate-100)" stroke-width="4.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path id="donut-app-arc" stroke="var(--curamigo-blue)" stroke-width="4.5" stroke-dasharray="68, 100" stroke-linecap="round" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path id="donut-walkin-arc" stroke="var(--accent-orange)" stroke-width="4.5" stroke-dasharray="32, 100" stroke-dashoffset="-68" stroke-linecap="round" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                  <span id="donut-center-total" style="font-size: 24px; font-weight: 800; color: var(--slate-900);">48</span>
+                  <span style="font-size: 10px; font-weight: 700; color: var(--slate-400); text-transform: uppercase;">Total</span>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-around; width: 100%; margin-top: 14px; font-size: 11px;">
+                <div><span style="color: var(--curamigo-blue); font-weight: 800;" id="legend-app-pct">68%</span> App (<span id="legend-app-count">33</span>)</div>
+                <div><span style="color: var(--accent-orange); font-weight: 800;" id="legend-walkin-pct">32%</span> Walk-in (<span id="legend-walkin-count">15</span>)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="desk-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <div>
+                <div class="card-title">Chamber Operational Breakdown</div>
+                <div class="card-sub">Chamber 101 vs Chamber 102 active workloads</div>
+              </div>
+              <span style="padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; background: var(--green-light); color: var(--green-dark);">🟢 Normal Flow</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <div style="padding: 14px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 10px;">
+                <div style="font-weight: 800; font-size: 13px; color: var(--slate-900);">Chamber 101 • Dr. Rajesh Sharma</div>
+                <div style="font-size: 11px; color: var(--slate-500); margin-bottom: 8px;">Cardiology & General Medicine</div>
+                <div>Completed: <strong>15 Patients</strong></div>
+                <div>In Waiting Lobby: <strong style="color: var(--curamigo-blue);">4 Patients</strong></div>
+                <div>No Show / Cancelled: <strong style="color: #DC2626;">2 Patients</strong></div>
+              </div>
+              <div style="padding: 14px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 10px;">
+                <div style="font-weight: 800; font-size: 13px; color: var(--slate-900);">Chamber 102 • Dr. Ananya Sen</div>
+                <div style="font-size: 11px; color: var(--slate-500); margin-bottom: 8px;">Pediatrics & Internal Medicine</div>
+                <div>Completed: <strong>11 Patients</strong></div>
+                <div>In Waiting Lobby: <strong style="color: var(--curamigo-blue);">3 Patients</strong></div>
+                <div>No Show / Cancelled: <strong style="color: #DC2626;">1 Patient</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="desk-card" style="padding: 0; overflow: hidden;">
+          <div style="padding: 16px 20px; border-bottom: 1px solid var(--slate-100); display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <div class="card-title">Today's Pending Consultations Master Roster</div>
+              <div class="card-sub">Appointments scheduled for today not yet completed</div>
+            </div>
+            <span class="btn btn-sm btn-outline" id="pending-count-badge">7 Pending</span>
+          </div>
+
+          <table class="queue-table">
+            <thead>
+              <tr><th>Token #</th><th>Patient Details</th><th>Doctor & Chamber</th><th>Reporting</th><th>Est. Entry</th><th>Location</th><th>Payment</th><th style="text-align: right;">Action</th></tr>
+            </thead>
+            <tbody id="overview-roster-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- =========================================================
+           TAB 3: 📂 CONSULTATION HISTORY
+           ========================================================= -->
+      <div id="tab-history" class="tab-view">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+          <div>
+            <h2 style="font-size: 18px; font-weight: 800; color: var(--slate-900);">Consultation History & Billing Records</h2>
+            <p style="font-size: 12px; color: var(--slate-500);">Financial records, invoices, and diagnostic report attachments.</p>
+          </div>
+        </div>
+
+        <div class="desk-card" style="padding: 12px 18px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; gap: 6px;">
+            <button class="btn btn-sm btn-outline history-date-btn" style="background: var(--curamigo-blue); color: white;" onclick="filterHistoryDate('Today', this)">Today</button>
+            <button class="btn btn-sm btn-outline history-date-btn" onclick="filterHistoryDate('This Week', this)">This Week</button>
+            <button class="btn btn-sm btn-outline history-date-btn" onclick="filterHistoryDate('All', this)">All</button>
+          </div>
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <span style="font-size: 11px; font-weight: 700; color: var(--slate-500);">PAYMENT:</span>
+            <button id="chip-cash" class="btn btn-sm" onclick="togglePaymentChip('Cash', this)" style="background: var(--primary-light); color: var(--curamigo-blue);">✓ Cash</button>
+            <button id="chip-upi" class="btn btn-sm" onclick="togglePaymentChip('UPI', this)" style="background: var(--primary-light); color: var(--curamigo-blue);">✓ UPI</button>
+            <button id="chip-app" class="btn btn-sm" onclick="togglePaymentChip('Quramigo', this)" style="background: var(--primary-light); color: var(--curamigo-blue);">✓ Quramigo</button>
+          </div>
+        </div>
+
+        <div class="desk-card" style="padding: 0; overflow: hidden;">
+          <table class="queue-table">
+            <thead>
+              <tr><th>Date & Time</th><th>Token & Invoice</th><th>Patient Details</th><th>Doctor & Chamber</th><th>Fee</th><th>Payment</th><th style="text-align: right;">Actions</th></tr>
+            </thead>
+            <tbody id="history-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- =========================================================
+           TAB 5: 🤖 AI ASSISTANT (COPILOT)
+           ========================================================= -->
+      <div id="tab-copilot" class="tab-view">
+        <div class="desk-card" style="padding: 0; overflow: hidden; max-width: 900px; margin: 0 auto; height: calc(100vh - 140px); display: flex; flex-direction: column;">
+          <div style="padding: 16px 20px; background: var(--slate-900); color: white; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 20px;">🤖</span>
+              <div>
+                <div style="font-size: 13px; font-weight: 800;">Quramigo Receptionist Copilot <span style="font-size: 9px; padding: 2px 6px; border-radius: 4px; background: rgba(16,185,129,0.2); color: #34D399;">LIVE DATA</span></div>
+                <div style="font-size: 11px; color: var(--slate-400);">Grounded in current live dashboard state & RBAC rules</div>
+              </div>
+            </div>
+            <span style="font-size: 11px; color: var(--slate-400); font-family: monospace;">Desk 1 Authorized</span>
+          </div>
+
+          <div id="copilot-feed" style="flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; background: var(--slate-50);">
+            <div class="chat-msg theirs">
+              <div style="font-size: 10px; font-weight: 700; color: var(--curamigo-blue); margin-bottom: 2px;">Quramigo Copilot</div>
+              Hello Pooja! I am your operational copilot. Ask me about chamber loads, lobby counts, UPI collections, or procedure instructions.
+            </div>
+          </div>
+
+          <div style="padding: 10px 16px; background: white; border-top: 1px solid var(--slate-200); overflow-x: auto; display: flex; gap: 6px; white-space: nowrap;">
+            <button class="btn btn-sm btn-outline" onclick="sendCopilotQuery('How many consultations completed today?')">How many completed?</button>
+            <button class="btn btn-sm btn-outline" onclick="sendCopilotQuery('How many patients are waiting in the lobby?')">How many waiting in lobby?</button>
+            <button class="btn btn-sm btn-outline" onclick="sendCopilotQuery('What is today\'s UPI collection?')">What is UPI collection?</button>
+            <button class="btn btn-sm btn-outline" onclick="sendCopilotQuery('What does the red blinking indicator mean?')">Red blinking meaning?</button>
+            <button class="btn btn-sm btn-outline" style="color: var(--red);" onclick="sendCopilotQuery('What is patient Rohan\'s diagnosis?')">🔒 Test RBAC: Diagnosis</button>
+          </div>
+
+          <div class="chat-input-bar">
+            <input type="text" id="copilot-input" class="form-input" placeholder="Ask Copilot an operational question..." onkeydown="if(event.key==='Enter') submitCopilotInput()">
+            <button class="btn btn-primary" onclick="submitCopilotInput()">Send</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- =========================================================
+           TAB 6: 💬 MESSAGING & APPROVAL ENGINE
+           ========================================================= -->
+      <div id="tab-messaging" class="tab-view">
+        <div class="chat-layout">
+          <div class="chat-sidebar">
+            <div style="padding: 14px; border-bottom: 1px solid var(--slate-200);">
+              <div style="font-size: 13px; font-weight: 800; color: var(--slate-900); margin-bottom: 6px;">Staff Threads</div>
+              <input type="text" class="form-input" placeholder="Search staff...">
+            </div>
+            <div style="flex: 1; overflow-y: auto; padding: 8px;">
+              <button id="chat-tab-doc-a" class="nav-item" onclick="switchChatThread('doc-a')" style="background: var(--curamigo-blue); color: white; margin-bottom: 4px;">
+                <div class="left-grp"><span>🩺 Dr. Rajesh Sharma (101)</span></div>
+                <span id="chat-badge-doc-a" class="nav-badge" style="background: var(--accent-orange); color: white;">1 req</span>
+              </button>
+              <button id="chat-tab-doc-b" class="nav-item" onclick="switchChatThread('doc-b')" style="margin-bottom: 4px;">
+                <div class="left-grp"><span>🩺 Dr. Ananya Sen (102)</span></div>
+              </button>
+              <button id="chat-tab-admin" class="nav-item" onclick="switchChatThread('admin')" style="margin-bottom: 4px;">
+                <div class="left-grp"><span>🏥 Hospital Admin</span></div>
+              </button>
+            </div>
+          </div>
+
+          <div class="chat-main">
+            <div style="padding: 14px 20px; border-bottom: 1px solid var(--slate-200); display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div style="font-size: 13px; font-weight: 800; color: var(--slate-900);" id="chat-active-name">Dr. Rajesh Sharma (Chamber 101)</div>
+                <div style="font-size: 11px; color: var(--slate-400);" id="chat-active-role">Senior Cardiologist • Active Connection</div>
+              </div>
+            </div>
+
+            <div id="chat-messages-container" class="chat-feed"></div>
+
+            <div class="chat-input-bar">
+              <input type="text" id="chat-input" class="form-input" placeholder="Message doctor..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+              <button class="btn btn-primary" onclick="sendChatMessage()">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =========================================================
+           TAB 7: ⚙️ SETTINGS
+           ========================================================= -->
+      <div id="tab-settings" class="tab-view">
+        <div class="desk-card" style="text-align: center; padding: 60px 20px; max-width: 600px; margin: 40px auto;">
+          <div style="font-size: 32px; margin-bottom: 12px;">⚙️</div>
+          <h2 style="font-size: 18px; font-weight: 800; color: var(--slate-900); margin-bottom: 6px;">Facility Configurations & Settings</h2>
+          <p style="font-size: 12px; color: var(--slate-500); max-width: 440px; margin: 0 auto 20px; line-height: 1.5;">
+            Settings module reserved for custom facility parameters. Configurations will be enabled by the hospital administrator.
+          </p>
+          <span class="btn btn-sm btn-outline">Active Role: Desk 1 Receptionist (Read-Only)</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- MODALS -->
+  <div id="modal-vitals" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header"><div class="modal-title">Record / Edit Vital Signs</div><button class="modal-close" onclick="closeModal('modal-vitals')">&times;</button></div>
+      <div class="modal-body">
+        <input type="hidden" id="vitals-patient-id">
+        <div class="form-row"><div class="form-group"><label class="form-label">BP Systolic</label><input type="number" id="vitals-bp-sys" class="form-input" value="120"></div><div class="form-group"><label class="form-label">BP Diastolic</label><input type="number" id="vitals-bp-dia" class="form-input" value="80"></div></div>
+        <div class="form-row"><div class="form-group"><label class="form-label">Pulse (bpm)</label><input type="number" id="vitals-pulse" class="form-input" value="72"></div><div class="form-group"><label class="form-label">Body Temp (°F)</label><input type="text" id="vitals-temp" class="form-input" value="98.6"></div></div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-vitals')">Cancel</button><button class="btn btn-primary" onclick="saveVitals()">Save Vitals</button></div>
+    </div>
+  </div>
+
+  <div id="modal-lab" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header" style="background: var(--primary-light);"><div class="modal-title" style="color: var(--curamigo-blue);">📁 Attach Diagnostic Lab Report</div><button class="modal-close" onclick="closeModal('modal-lab')">&times;</button></div>
+      <div class="modal-body">
+        <input type="hidden" id="lab-patient-id">
+        <div class="form-group"><label class="form-label">Report Type</label><select id="lab-report-type" class="form-select"><option value="Blood Pathology">Blood Pathology (CBC, Lipid, LFT)</option><option value="X-Ray / Radiology">X-Ray / Radiology Scan</option><option value="ECG">ECG Tracing (12-Lead)</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-lab')">Cancel</button><button class="btn btn-primary" onclick="saveDiagnosticReport()">Attach & Bump Priority</button></div>
+    </div>
+  </div>
+
+  <div id="modal-block" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header" style="background: #FEF3C7;"><div class="modal-title" style="color: #92400E;">🚫 Request Doctor Calendar Block</div><button class="modal-close" onclick="closeModal('modal-block')">&times;</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label class="form-label">Doctor</label><select id="block-doc" class="form-select"><option value="doc-a">Dr. Rajesh Sharma (Chamber 101)</option><option value="doc-b">Dr. Ananya Sen (Chamber 102)</option></select></div>
+        <div class="form-group"><label class="form-label">Time Window</label><input type="text" id="block-time" class="form-input" value="11:30 AM – 01:00 PM (1.5 Hours)"></div>
+        <div class="form-group"><label class="form-label">Reason</label><select id="block-reason" class="form-select"><option value="Attending ICU Emergency Rounds">Attending ICU Emergency Rounds</option><option value="Emergency Scheduled Surgery">Emergency Scheduled Surgery</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-block')">Cancel</button><button class="btn btn-primary" onclick="submitBlockRequest()">Send for Doctor Approval</button></div>
+    </div>
+  </div>
+
+  <div id="modal-book" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header"><div class="modal-title">+ Add Patient Appointment</div><button class="modal-close" onclick="closeModal('modal-book')">&times;</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label class="form-label">Patient Name</label><input type="text" id="book-patient-name" class="form-input" placeholder="e.g. Shalini Roy"></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Doctor</label><select id="book-doctor" class="form-select"><option value="doc-a">Dr. Rajesh (101)</option><option value="doc-b">Dr. Ananya (102)</option></select></div>
+          <div class="form-group"><label class="form-label">Time</label><input type="text" id="book-time" class="form-input" value="12:00 PM - 12:30 PM"></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-book')">Cancel</button><button class="btn btn-primary" onclick="submitBookAppointment()">Confirm Appointment</button></div>
+    </div>
+  </div>
+
+  <div id="modal-search" class="modal-backdrop">
+    <div class="modal-dialog" style="max-width: 500px;">
+      <div style="padding: 12px 16px; border-bottom: 1px solid var(--slate-100); display: flex; align-items: center; gap: 8px;">
+        <span>🔍</span>
+        <input type="text" id="global-search-input" class="form-input" placeholder="Search patient by token, name, or phone..." oninput="handleGlobalSearch(this.value)" style="border: none;">
+        <kbd style="font-size: 10px; font-family: monospace;">ESC</kbd>
+      </div>
+      <div id="search-modal-results" style="max-height: 260px; overflow-y: auto; padding: 8px;"></div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- JAVASCRIPT STATE ENGINE -->
+  <script>
+    const STATE = {
+      currentMainTab: 'calendar',
+      globalDoctorScope: 'all',
+      deskActiveChamber: 'doc-a',
+      calendarDoctorFilter: 'all',
+      calWeekOffset: 0,
+      activeChatId: 'doc-a',
+
+      deskRegType: 'walkin',
+      deskPriority: null,
+      deskInitialStatus: 'Verified in lobby',
+      deskFilter: 'All active',
+      deskSearch: '',
+
+      historyDate: 'Today',
+      historyPayments: ['Cash', 'UPI', 'Quramigo'],
+
+      doctors: {
+        'doc-a': { id: 'doc-a', name: 'Dr. Rajesh Sharma', chamber: 'Chamber 101', specialty: 'Cardiology', status: 'operational', idleSeconds: 0, patientInVisit: 'Anand Kumar (#A-098)', completed: 15, rollingAct: '9.0m' },
+        'doc-b': { id: 'doc-b', name: 'Dr. Ananya Sen', chamber: 'Chamber 102', specialty: 'Pediatrics', status: 'idle', idleSeconds: 145, patientInVisit: null, completed: 11, rollingAct: '12.0m' }
+      },
+
+      deskQueue: [
+        { pos: 1, doctorId: 'doc-a', token: 'E-1', name: 'Arjun Ramesh', priority: 'Emergency', subtext: null, reporting: '09:30 AM', eta: '11:06 AM', status: 'Verified in lobby' },
+        { pos: 2, doctorId: 'doc-a', token: 'V-1', name: 'Priya Nair', priority: 'Regular', subtext: 'VIP awaiting', subtextColor: '#D97706', reporting: '09:45 AM', eta: '11:19 AM', status: 'Verified in lobby' },
+        { pos: 3, doctorId: 'doc-a', token: 'W-1', name: 'Rahul Verma', priority: 'Regular', hasDots: true, subtext: 'Patient reported delay +10m', subtextColor: '#2563EB', reporting: '11:36 PM', eta: '11:51 PM', status: 'Expected' },
+        { pos: 4, doctorId: 'doc-a', token: 'W-2', name: 'Meera Iyer', priority: 'Regular', subtext: null, reporting: '10:15 AM', eta: '10:20 AM', status: 'At diagnostics' },
+        { pos: 5, doctorId: 'doc-a', token: 'W-3', name: 'Karthik Rao', priority: 'Regular', subtext: null, reporting: '10:30 AM', eta: '10:40 AM', status: 'Temporarily away' },
+        { pos: 6, doctorId: 'doc-b', token: 'B-201', name: 'Aarav Mehta', priority: 'Regular', subtext: 'Pediatric review', subtextColor: '#2563EB', reporting: '10:50 AM', eta: '11:00 AM', status: 'Verified in lobby' },
+        { pos: 7, doctorId: 'doc-b', token: 'B-202', name: 'Vikram Joshi', priority: 'Regular', subtext: null, reporting: '11:10 AM', eta: '11:20 AM', status: 'Expected' }
+      ],
+
+      cancelled: [
+        { token: 'W-4', doctorId: 'doc-a', name: 'Sneha Kulkarni', reporting: '10:00 AM', eta: '10:10 AM' }
+      ],
+
+      pendingRoster: [
+        { id: 'p-1', token: 'E-1', name: 'Arjun Ramesh', age: 48, gender: 'M', doctorId: 'doc-a', chamber: 'Chamber 101', eta: '09:30 AM', estEntry: '11:06 AM', location: 'Checked-In', payment: 'Paid Online', phone: '+91 98450 11111', vitals: { bp: '130/85', pulse: '76', temp: '98.4', spo2: '98', weight: '74' } },
+        { id: 'p-2', token: 'V-1', name: 'Priya Nair', age: 29, gender: 'F', doctorId: 'doc-a', chamber: 'Chamber 101', eta: '09:45 AM', estEntry: '11:19 AM', location: 'Checked-In', payment: 'Pay at Desk', phone: '+91 91234 56789', vitals: null },
+        { id: 'p-3', token: 'W-1', name: 'Rahul Verma', age: 38, gender: 'M', doctorId: 'doc-a', chamber: 'Chamber 101', eta: '11:36 PM', estEntry: '11:51 PM', location: 'En-Route', payment: 'Paid Online', phone: '+91 98111 22334', vitals: null }
+      ],
+
+      historyRecords: [
+        { id: 'h-1', date: '2026-11-15 10:15 AM', period: 'Today', token: '#A-090', invoice: 'INV-2026-9041', patient: 'Deepak Chopra', phone: '+91 98201 11223', doctorId: 'doc-a', doctorName: 'Dr. Rajesh Sharma', fee: 800, payment: 'UPI', reports: ['Lipid_Profile.pdf'] },
+        { id: 'h-2', date: '2026-11-15 09:50 AM', period: 'Today', token: '#B-195', invoice: 'INV-2026-9040', patient: 'Ananya Roy', phone: '+91 97112 33445', doctorId: 'doc-b', doctorName: 'Dr. Ananya Sen', fee: 750, payment: 'Quramigo', reports: [] }
+      ],
+
+      chats: {
+        'doc-a': {
+          name: 'Dr. Rajesh Sharma (Chamber 101)',
+          role: 'Senior Cardiologist',
+          messages: [
+            { id: 'm-1', sender: 'doctor', text: 'Good morning Pooja. Please make sure Arjun Ramesh gets his vitals taken.', time: '09:15 AM' },
+            { id: 'card-1', type: 'approval_card', requester: 'Receptionist Pooja', timeWindow: '11:30 AM – 01:00 PM (1.5 Hours)', reason: 'Attending ICU Emergency Rounds', status: 'pending', time: '10:20 AM' }
+          ]
+        },
+        'doc-b': {
+          name: 'Dr. Ananya Sen (Chamber 102)',
+          role: 'Pediatric Specialist',
+          messages: [{ id: 'm-3', sender: 'doctor', text: 'Hi Pooja, quick tea break for 3 mins.', time: '10:35 AM' }]
+        },
+        'admin': {
+          name: 'Hospital Administration',
+          role: 'Operations',
+          messages: [{ id: 'm-4', sender: 'admin', text: 'Inspection review next week.', time: 'Yesterday' }]
+        }
+      }
+    };
+
+    // UTILS
+    function formatTimeSec(secs) {
+      const m = Math.floor(secs / 60); const s = secs % 60;
+      return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }
+    function showToast(msg, type = 'info') {
+      const c = document.getElementById('toast-container');
+      const t = document.createElement('div');
+      t.className = 'toast ' + (type === 'success' ? 'toast-success' : type === 'error' ? 'toast-error' : '');
+      t.innerHTML = (type === 'success' ? '✅ ' : type === 'error' ? '⚠️ ' : 'ℹ️ ') + msg;
+      c.appendChild(t);
+      setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 200); }, 3500);
+    }
+    function openModal(id) { const m = document.getElementById(id); if (m) m.classList.add('open'); }
+    function closeModal(id) { const m = document.getElementById(id); if (m) m.classList.remove('open'); }
+
+    // THE 4-MINUTE IDLE ENGINE
+    setInterval(() => {
+      Object.keys(STATE.doctors).forEach(id => {
+        const d = STATE.doctors[id];
+        if (d.status === 'idle') {
+          d.idleSeconds++;
+          if (d.idleSeconds > 240) d.status = 'delayed';
+        }
+      });
+      renderDoctorStatusWidgets();
+    }, 1000);
+
+    function renderDoctorStatusWidgets() {
+      const docA = STATE.doctors['doc-a'];
+      const elA = document.getElementById('widget-doc-a');
+      if (elA) {
+        if (docA.status === 'operational') {
+          elA.innerHTML = '<span style="width: 7px; height: 7px; border-radius: 50%; background: var(--green);"></span><span>Dr. A:</span><span style="color: var(--green); font-weight: 800;">🟢 In Visit</span>';
+          elA.classList.remove('status-pulse-red');
+        } else if (docA.status === 'idle') {
+          elA.innerHTML = '<span style="width: 7px; height: 7px; border-radius: 50%; background: var(--accent-orange);"></span><span>Dr. A:</span><span style="color: var(--accent-orange); font-weight: 800;">🟡 Idle: ' + formatTimeSec(docA.idleSeconds) + '</span>';
+          elA.classList.remove('status-pulse-red');
+        } else {
+          elA.innerHTML = '<span style="width: 7px; height: 7px; border-radius: 50%; background: var(--red);"></span><span>Dr. A:</span><span style="color: var(--red); font-weight: 800;">🔴 Delayed (' + formatTimeSec(docA.idleSeconds) + ')</span>';
+          elA.classList.add('status-pulse-red');
+        }
+      }
+
+      const docB = STATE.doctors['doc-b'];
+      const elB = document.getElementById('widget-doc-b');
+      if (elB) {
+        if (docB.status === 'operational') {
+          elB.innerHTML = '<span style="width: 7px; height: 7px; border-radius: 50%; background: var(--green);"></span><span>Dr. B:</span><span style="color: var(--green); font-weight: 800;">🟢 Ready</span>';
+          elB.classList.remove('status-pulse-red');
+        } else if (docB.status === 'idle') {
+          elB.innerHTML = '<span style="width: 7px; height: 7px; border-radius: 50%; background: var(--accent-orange);"></span><span>Dr. B:</span><span style="color: var(--accent-orange); font-weight: 800;">🟡 Idle: ' + formatTimeSec(docB.idleSeconds) + '</span>';
+          elB.classList.remove('status-pulse-red');
+        } else {
+          elB.innerHTML = '<span style="width: 7px; height: 7px; border-radius: 50%; background: var(--red);"></span><span>Dr. B:</span><span style="color: var(--red); font-weight: 800;">🔴 Delayed (' + formatTimeSec(docB.idleSeconds) + ')</span>';
+          elB.classList.add('status-pulse-red');
+        }
+      }
+    }
+
+    function toggleDoctorIdleSimulation() {
+      const docB = STATE.doctors['doc-b'];
+      if (docB.status === 'delayed' || docB.idleSeconds > 240) {
+        docB.status = 'operational';
+        docB.idleSeconds = 0;
+        document.getElementById('sim-btn-text').innerText = 'Simulate Doctor Idle > 4m';
+        showToast("Doctor B status reset to Operational (Green).", "success");
+      } else {
+        docB.status = 'delayed';
+        docB.idleSeconds = 252;
+        document.getElementById('sim-btn-text').innerText = 'Reset Dr. B Status';
+        showToast("Simulated Doctor B Idle > 4m! Blinking red delayed status active.", "error");
+      }
+      renderDoctorStatusWidgets();
+    }
+
+    // MAIN NAVIGATION
+    function switchMainTab(tabId) {
+      STATE.currentMainTab = tabId;
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-list .nav-item').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById('tab-' + tabId);
+      if (target) target.classList.add('active');
+
+      const navBtn = document.getElementById('nav-btn-' + tabId);
+      if (navBtn) navBtn.classList.add('active');
+
+      if (tabId === 'calendar') renderCalendarTab();
+      if (tabId === 'desk') renderDeskOperations();
+      if (tabId === 'overview') renderOverview();
+      if (tabId === 'history') renderHistory();
+      if (tabId === 'messaging') renderMessaging();
+    }
+
+    function setGlobalDoctorScope(scope) {
+      STATE.globalDoctorScope = scope;
+      document.getElementById('scope-btn-all').classList.toggle('active', scope === 'all');
+      document.getElementById('scope-btn-a').classList.toggle('active', scope === 'doc-a');
+      document.getElementById('scope-btn-b').classList.toggle('active', scope === 'doc-b');
+      showToast('Global scope set to ' + (scope === 'all' ? 'All Doctors' : scope === 'doc-a' ? 'Doctor A (Chamber 101)' : 'Doctor B (Chamber 102)'));
+      renderOverview();
+      renderCalendarTab();
+    }
+
+    // =========================================================
+    // CALENDAR TAB RENDERING (MATCHING SCREENSHOT)
+    // =========================================================
+    function renderCalendarTab() {
+      // Scroll grid so that 9:00 AM is visible nicely
+      const scrollEl = document.getElementById('cal-grid-panel-scroll');
+      if (scrollEl) scrollEl.scrollTop = 120;
+    }
+
+    function setCalSegment(mode, btn) {
+      document.querySelectorAll('.cal-seg-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      showToast(`Calendar switched to ${mode} View`);
+    }
+
+    function selectCalendarDocFilter(docName) {
+      document.querySelectorAll('.cal-doctor-item').forEach(el => el.classList.remove('active'));
+      if (docName === 'all') document.getElementById('cal-doc-item-all').classList.add('active');
+      if (docName === 'Dr. Elan') document.getElementById('cal-doc-item-elan').classList.add('active');
+      if (docName.includes('Rajesh')) document.getElementById('cal-doc-item-rajesh').classList.add('active');
+      if (docName.includes('Ananya')) document.getElementById('cal-doc-item-ananya').classList.add('active');
+
+      document.getElementById('cal-clinic-name-label').innerText = `${docName} ⌵`;
+      showToast(`Calendar focused on ${docName}`);
+    }
+
+    function shiftCalWeek(delta) {
+      STATE.calWeekOffset += delta;
+      if (STATE.calWeekOffset === 0) {
+        document.getElementById('cal-range-text').innerText = '14 – 19 Nov 2026';
+      } else {
+        document.getElementById('cal-range-text').innerText = `Week Offset (${STATE.calWeekOffset > 0 ? '+' : ''}${STATE.calWeekOffset}w)`;
+      }
+    }
+
+    function handleCalSearch(val) {
+      const q = val.toLowerCase().trim();
+      if (!q) return;
+      showToast(`Searching calendar appointments for "${val}"...`);
+    }
+
+    function setSchedTab(tab, btn) {
+      document.querySelectorAll('.cal-right-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      showToast(`Showing ${tab.toUpperCase()} schedule items`);
+    }
+
+    function filterScheduleStatus(status) {
+      const items = document.querySelectorAll('.cal-sched-card-item');
+      items.forEach(el => {
+        if (status === 'all' || el.getAttribute('data-status') === status) {
+          el.style.display = 'block';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+      showToast(`Showing ${status === 'cancelled' ? 'Cancelled / No Show' : status.toUpperCase()} items`);
+    }
+
+    // =========================================================
+    // DESK OPERATIONS & OTHER TABS (FROM PREVIOUS TURN)
+    // =========================================================
+    function switchDeskChamber(c) {
+      STATE.deskActiveChamber = c;
+      document.getElementById('chamber-btn-a').classList.toggle('active', c === 'doc-a');
+      document.getElementById('chamber-btn-b').classList.toggle('active', c === 'doc-b');
+      document.getElementById('chamber-btn-all').classList.toggle('active', c === 'all');
+      renderDeskOperations();
+    }
+
+    function renderDeskOperations() {
+      const qA = STATE.deskQueue.filter(p => p.doctorId === 'doc-a').length;
+      const qB = STATE.deskQueue.filter(p => p.doctorId === 'doc-b').length;
+      document.getElementById('badge-count-doc-a').innerText = qA;
+      document.getElementById('badge-count-doc-b').innerText = qB;
+      document.getElementById('nav-badge-desk').innerText = STATE.deskQueue.length;
+
+      const activeScope = STATE.deskActiveChamber;
+      const relevant = activeScope === 'all' ? STATE.deskQueue : STATE.deskQueue.filter(p => p.doctorId === activeScope);
+
+      const verified = relevant.filter(p => p.status === 'Verified in lobby').length;
+      document.getElementById('desk-metric-expected').innerText = relevant.filter(p => p.status === 'Expected').length;
+      document.getElementById('desk-metric-verified').innerText = verified;
+      document.getElementById('desk-metric-away').innerText = relevant.filter(p => p.status === 'At diagnostics' || p.status === 'Temporarily away').length;
+      document.getElementById('desk-metric-attention').innerText = relevant.filter(p => p.priority === 'Emergency' || p.subtext !== null).length + STATE.cancelled.length;
+
+      const nextCall = relevant.find(p => p.status === 'Verified in lobby');
+      if (nextCall) {
+        document.getElementById('callable-patient-name').innerText = `${nextCall.token} • ${nextCall.name}`;
+      } else {
+        document.getElementById('callable-patient-name').innerText = 'No patients ready in lobby';
+      }
+
+      renderDeskQueueTable();
+    }
+
+    function renderDeskQueueTable() {
+      const activeScope = STATE.deskActiveChamber;
+      const filtered = STATE.deskQueue.filter(p => {
+        if (activeScope !== 'all' && p.doctorId !== activeScope) return false;
+        if (STATE.deskFilter !== 'All active' && p.status !== STATE.deskFilter) return false;
+        if (STATE.deskSearch) {
+          const matchTok = p.token.toLowerCase().includes(STATE.deskSearch);
+          const matchName = p.name.toLowerCase().includes(STATE.deskSearch);
+          if (!matchTok && !matchName) return false;
+        }
+        return true;
+      });
+
+      const tbody = document.getElementById('master-queue-body');
+      tbody.innerHTML = filtered.map(p => `
+        <tr>
+          <td><div class="pos-circle">${p.pos}</div></td>
+          <td><strong>${p.token} • ${p.name}</strong><div style="font-size: 11px; color: ${p.subtextColor || 'var(--slate-500)'};">${p.subtext || ''}</div></td>
+          <td><span class="status-badge ${p.priority === 'Emergency' ? 'badge-emergency' : 'badge-regular'}">${p.priority}</span></td>
+          <td style="font-family: monospace;">${p.reporting}</td>
+          <td style="font-family: monospace; font-weight: 700;">${p.eta}</td>
+          <td><span class="status-badge ${p.status === 'Verified in lobby' ? 'badge-verified' : p.status === 'At diagnostics' ? 'badge-diagnostics' : 'badge-expected'}">${p.status}</span></td>
+          <td style="text-align: right;">
+            <button class="btn btn-sm btn-outline" onclick="openVitalsModal('${p.token}', '${p.name}', '${p.token}')">🩺</button>
+            <button class="btn btn-sm btn-outline" style="color: var(--curamigo-blue);" onclick="openLabModal('${p.token}', '${p.name}', '${p.token}')">📁</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function setDeskRegType(t) {
+      STATE.deskRegType = t;
+      document.getElementById('btn-reg-walkin').classList.toggle('active', t === 'walkin');
+      document.getElementById('btn-reg-expected').classList.toggle('active', t === 'expected');
+    }
+    function toggleDeskPriorityChoice(p) {
+      STATE.deskPriority = STATE.deskPriority === p ? null : p;
+      document.getElementById('chip-emergency').classList.toggle('active-emergency', STATE.deskPriority === 'Emergency');
+      document.getElementById('chip-vip').classList.toggle('active-vip', STATE.deskPriority === 'VIP');
+    }
+    function setDeskInitialPhysicalStatus(s) {
+      STATE.deskInitialStatus = s;
+      document.getElementById('pill-status-lobby').classList.toggle('active-verified', s === 'Verified in lobby');
+      document.getElementById('pill-status-away').classList.toggle('active-away', s === 'Temporarily away');
+    }
+    function updateRegisterButtonState() {
+      const v = document.getElementById('patient-name-input').value.trim();
+      document.getElementById('btn-register-action').classList.toggle('ready', v.length > 0);
+    }
+    function handleDeskRegisterPatient() {
+      const input = document.getElementById('patient-name-input');
+      const name = input.value.trim() || 'Walk-in Patient';
+      const doctorId = document.getElementById('reg-doctor-target').value;
+      const newRecord = {
+        pos: STATE.deskQueue.length + 1,
+        doctorId: doctorId,
+        token: `W-${STATE.deskQueue.length + 1}`,
+        name: name,
+        priority: STATE.deskPriority === 'Emergency' ? 'Emergency' : 'Regular',
+        subtext: STATE.deskPriority === 'VIP' ? 'VIP awaiting' : null,
+        subtextColor: STATE.deskPriority === 'VIP' ? '#D97706' : null,
+        reporting: '11:15 AM',
+        eta: '11:30 AM',
+        status: STATE.deskInitialStatus
+      };
+      if (newRecord.priority === 'Emergency') {
+        STATE.deskQueue.unshift(newRecord);
+        STATE.deskQueue.forEach((item, idx) => item.pos = idx + 1);
+      } else {
+        STATE.deskQueue.push(newRecord);
+      }
+      input.value = '';
+      renderDeskOperations();
+      showToast(`Walk-in registered: ${name}`, "success");
+    }
+
+    function setDeskQueueFilter(f, btn) {
+      STATE.deskFilter = f;
+      document.querySelectorAll('.filter-pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderDeskQueueTable();
+    }
+    function handleDeskSearchTable(val) {
+      STATE.deskSearch = val.toLowerCase().trim();
+      renderDeskQueueTable();
+    }
+    function restoreCancelledPatient() {
+      if (STATE.cancelled.length === 0) return;
+      const c = STATE.cancelled.shift();
+      STATE.deskQueue.push({
+        pos: STATE.deskQueue.length + 1, doctorId: c.doctorId, token: c.token, name: c.name,
+        priority: 'Regular', subtext: 'Restored', reporting: c.reporting, eta: c.eta, status: 'Verified in lobby'
+      });
+      renderDeskOperations();
+      showToast(`Restored ${c.name} to active queue!`, "success");
+    }
+
+    function renderOverview() {
+      const scope = STATE.globalDoctorScope;
+      let total = 48, completed = 26, remaining = 22, lobby = 7, noshow = 3;
+      if (scope === 'doc-a') {
+        total = 28; completed = 15; remaining = 13; lobby = 4; noshow = 2;
+      } else if (scope === 'doc-b') {
+        total = 20; completed = 11; remaining = 9; lobby = 3; noshow = 1;
+      }
+
+      document.getElementById('kpi-total').innerText = total;
+      document.getElementById('kpi-remaining').innerText = remaining;
+      document.getElementById('kpi-lobby').innerText = lobby;
+      document.getElementById('kpi-completed').innerText = completed;
+      if (document.getElementById('kpi-noshow')) {
+        document.getElementById('kpi-noshow').innerText = noshow;
+      }
+      const scopeBadge = document.getElementById('overview-scope-badge');
+      if (scopeBadge) {
+        scopeBadge.innerText = 'Scope: ' + (scope === 'all' ? 'All Chambers' : scope === 'doc-a' ? 'Chamber 101 (Dr. Rajesh)' : 'Chamber 102 (Dr. Ananya)');
+      }
+
+      const tbody = document.getElementById('overview-roster-body');
+      tbody.innerHTML = STATE.pendingRoster.map(p => `
+        <tr>
+          <td><strong style="color: var(--curamigo-blue);">${p.token}</strong></td>
+          <td><strong>${p.name}</strong></td>
+          <td>${p.doctorId === 'doc-a' ? 'Dr. Rajesh (101)' : 'Dr. Ananya (102)'}</td>
+          <td>${p.eta}</td>
+          <td>${p.estEntry}</td>
+          <td><span class="status-badge badge-verified">${p.location}</span></td>
+          <td><span class="status-badge badge-regular">${p.payment}</span></td>
+          <td style="text-align: right;"><button class="btn btn-sm btn-outline" onclick="openVitalsModal('${p.token}', '${p.name}', '${p.token}')">Vitals</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderHistory() {
+      const tbody = document.getElementById('history-table-body');
+      tbody.innerHTML = STATE.historyRecords.map(r => `
+        <tr>
+          <td>${r.date}</td>
+          <td><strong>${r.token}</strong></td>
+          <td>${r.patient}</td>
+          <td>${r.doctorName}</td>
+          <td>₹${r.fee}</td>
+          <td><span class="status-badge badge-regular">${r.payment}</span></td>
+          <td style="text-align: right;"><button class="btn btn-sm btn-outline">Receipt</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function sendCopilotQuery(q) {
+      const feed = document.getElementById('copilot-feed');
+      const u = document.createElement('div'); u.className = 'chat-msg mine'; u.innerText = q; feed.appendChild(u);
+      let reply = "Live State: 48 registered, 7 in lobby. Dr. Rajesh is active in chamber 101.";
+      if (q.toLowerCase().includes('diagnosis') || q.toLowerCase().includes('salary')) {
+        reply = "Access Restricted: Receptionist authorization does not permit access to clinical EMR diagnoses or doctor remuneration data.";
+      }
+      setTimeout(() => {
+        const a = document.createElement('div'); a.className = 'chat-msg theirs'; a.innerText = reply;
+        if (reply.startsWith('Access Restricted')) { a.style.background = 'var(--red-light)'; a.style.color = 'var(--red)'; }
+        feed.appendChild(a); feed.scrollTop = feed.scrollHeight;
+      }, 200);
+      feed.scrollTop = feed.scrollHeight;
+    }
+    function submitCopilotInput() {
+      const inp = document.getElementById('copilot-input');
+      if (!inp.value.trim()) return; sendCopilotQuery(inp.value.trim()); inp.value = '';
+    }
+
+    function switchChatThread(id) {
+      STATE.activeChatId = id;
+      document.getElementById('chat-tab-doc-a').style.background = id === 'doc-a' ? 'var(--curamigo-blue)' : 'transparent';
+      document.getElementById('chat-tab-doc-a').style.color = id === 'doc-a' ? 'white' : 'var(--slate-700)';
+      document.getElementById('chat-tab-doc-b').style.background = id === 'doc-b' ? 'var(--curamigo-blue)' : 'transparent';
+      document.getElementById('chat-tab-doc-b').style.color = id === 'doc-b' ? 'white' : 'var(--slate-700)';
+      document.getElementById('chat-active-name').innerText = STATE.chats[id].name;
+      renderMessaging();
+    }
+
+    function renderMessaging() {
+      const chat = STATE.chats[STATE.activeChatId];
+      const container = document.getElementById('chat-messages-container');
+      container.innerHTML = chat.messages.map(m => {
+        if (m.type === 'approval_card') {
+          return `
+            <div class="approval-card">
+              <div class="approval-header">
+                <span>📋 CALENDAR BLOCK REQUEST (ACTION REQUIRED)</span>
+                <span class="status-badge ${m.status === 'pending' ? 'badge-regular' : 'badge-verified'}">
+                  ${m.status === 'pending' ? '🟡 PENDING APPROVAL' : '🟢 APPROVED'}
+                </span>
+              </div>
+              <div style="font-size: 11px; margin-bottom: 10px;">
+                <div><strong>Requester:</strong> ${m.requester}</div>
+                <div><strong>Time Window:</strong> ${m.timeWindow}</div>
+                <div><strong>Reason:</strong> "${m.reason}"</div>
+              </div>
+              ${m.status === 'pending' ? `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                  <button class="btn btn-sm btn-primary" onclick="approveBlockFromChat('${m.id}')" style="background: var(--green);">✅ APPROVE</button>
+                  <button class="btn btn-sm btn-danger" onclick="rejectBlockFromChat('${m.id}')">❌ REJECT</button>
+                </div>
+              ` : `<div style="padding: 6px; background: var(--green-light); color: var(--green); text-align: center; font-weight: 700; border-radius: 6px;">🟢 APPROVED by Doctor at ${m.approvedAt}</div>`}
+            </div>
+          `;
+        }
+        return `<div class="chat-msg ${m.sender === 'me' ? 'mine' : 'theirs'}">${m.text}</div>`;
+      }).join('');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function approveBlockFromChat(cardId) {
+      const chat = STATE.chats[STATE.activeChatId];
+      const card = chat.messages.find(m => m.id === cardId);
+      if (!card) return;
+      card.status = 'approved';
+      card.approvedAt = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      // Update calendar slot on grid to locked
+      const gridSlot = document.getElementById('grid-slot-block-card');
+      if (gridSlot) {
+        gridSlot.className = 'cal-appointment-card blocked-slot';
+        gridSlot.innerHTML = `<div style="font-weight: 800;">🔒 LOCKED: ${card.reason}</div><div style="font-size: 10px;">11:30 AM - 1:00 PM • Approved by Doctor</div>`;
+      }
+
+      document.getElementById('nav-badge-messaging').style.display = 'none';
+      renderMessaging();
+      showToast("Calendar Block Approved! Time slot locked on grid schedule.", "success");
+    }
+
+    function rejectBlockFromChat(cardId) {
+      const chat = STATE.chats[STATE.activeChatId];
+      const card = chat.messages.find(m => m.id === cardId);
+      if (!card) return;
+      card.status = 'rejected';
+      renderMessaging();
+      showToast("Calendar block rejected.", "info");
+    }
+
+    function sendChatMessage() {
+      const inp = document.getElementById('chat-input');
+      if (!inp.value.trim()) return;
+      STATE.chats[STATE.activeChatId].messages.push({ id: 'm-' + Date.now(), sender: 'me', text: inp.value.trim(), time: '11:15 AM' });
+      inp.value = '';
+      renderMessaging();
+    }
+
+    function openVitalsModal(tok, name, id) { openModal('modal-vitals'); }
+    function saveVitals() { closeModal('modal-vitals'); showToast("Vitals recorded successfully!", "success"); }
+    function openLabModal(tok, name, id) { openModal('modal-lab'); }
+    function saveDiagnosticReport() { closeModal('modal-lab'); showToast("Diagnostic report attached!", "success"); }
+    
+    function submitBlockRequest() {
+      const doc = document.getElementById('block-doc').value;
+      const time = document.getElementById('block-time').value;
+      const reason = document.getElementById('block-reason').value;
+
+      STATE.chats[doc].messages.push({
+        id: 'card-' + Date.now(),
+        type: 'approval_card',
+        requester: 'Receptionist Pooja',
+        timeWindow: time,
+        reason: reason,
+        status: 'pending',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+
+      document.getElementById('nav-badge-messaging').style.display = 'inline-block';
+      closeModal('modal-block');
+      renderMessaging();
+      showToast("Block request sent to doctor chat thread for approval!", "info");
+    }
+
+    function submitBookAppointment() {
+      const name = document.getElementById('book-patient-name').value || 'New Appointment';
+      const time = document.getElementById('book-time').value;
+
+      const list = document.getElementById('cal-schedule-items-list');
+      const item = document.createElement('div');
+      item.style.cssText = "font-size: 12px; font-weight: 700; color: var(--slate-900); padding: 8px 10px; background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 6px;";
+      item.innerHTML = `<div style="display: flex; justify-content: space-between;"><span>${name}</span><span style="color: var(--curamigo-blue); font-family: monospace;">${time}</span></div><div style="font-size: 10px; color: var(--curamigo-blue); margin-top: 2px;">Confirmed • No Approval Needed</div>`;
+      list.prepend(item);
+
+      // Increment stat pill
+      const pill = document.getElementById('stat-pill-today');
+      pill.innerText = parseInt(pill.innerText) + 1;
+
+      closeModal('modal-book');
+      showToast(`Appointment added for ${name} on calendar!`, "success");
+    }
+
+    function handleGlobalSearch(q) {
+      const c = document.getElementById('search-modal-results');
+      const term = q.toLowerCase();
+      const matches = STATE.deskQueue.filter(p => p.name.toLowerCase().includes(term) || p.token.toLowerCase().includes(term));
+      c.innerHTML = matches.map(p => `
+        <div style="padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="closeModal('modal-search'); switchMainTab('calendar')">
+          <div><strong>${p.name}</strong> (${p.token})</div>
+          <span style="font-size: 11px; color: var(--curamigo-blue); font-weight: 700;">Open &rarr;</span>
+        </div>
+      `).join('');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault(); openModal('modal-search'); document.getElementById('global-search-input').focus();
+      }
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+      }
+    });
+
+    function refreshCurrentView() {
+      renderCalendarTab();
+      renderDeskOperations();
+      renderOverview();
+      renderHistory();
+      renderMessaging();
+      showToast("Calendar schedule re-synchronized.");
+    }
+
+    // BOOTSTRAP
+    renderCalendarTab();
+    renderDeskOperations();
+    renderOverview();
+    renderHistory();
+    renderMessaging();
+    renderDoctorStatusWidgets();
+  </script>
+</body>
+</html>
